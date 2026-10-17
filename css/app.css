@@ -308,3 +308,27 @@ dialog.sheet.tall { height: 92vh; height: 92dvh; }
 .disclaimer { margin-top: 28px !important; padding: 12px 14px; border-radius: 14px; background: var(--mustard-soft); font-size: .85rem; }
 .source { margin-top: 12px !important; font-size: .78rem; color: var(--muted); }
 .source a { color: inherit; }
+
+/* Datum invullen */
+.date-row { display: flex; gap: 8px; align-items: stretch; }
+.date-input {
+  flex: 1; min-width: 0; min-height: 48px; padding: 10px 14px;
+  border: 1px solid var(--ink); border-radius: 12px;
+  background: var(--card); color: var(--ink); font: inherit; font-size: 16px; /* 16px: geen inzoomen op iPhone */
+  -webkit-appearance: none; appearance: none; text-align: left;
+}
+.date-input::-webkit-date-and-time-value { text-align: left; }
+.date-row .chip { min-height: 48px; }
+.date-feedback { margin: 6px 2px 0 !important; min-height: 1.2em; font-weight: 600; font-size: .9rem; }
+
+/* Inklapbare blokken */
+.fold { border-bottom: 1px solid var(--line); }
+.fold:first-of-type { margin-top: 22px; border-top: 1px solid var(--line); }
+.fold summary {
+  list-style: none; cursor: pointer; padding: 14px 2px; font-weight: 600;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.fold summary::-webkit-details-marker { display: none; }
+.fold summary::after { content: "+"; font-weight: 400; font-size: 1.3rem; color: var(--muted); }
+.fold[open] summary::after { content: "–"; }
+.fold > :not(summary) { margin: 0 2px 14px; }
