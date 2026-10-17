@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f3efe6">
+<title>Datechecker</title>
+<!-- Op het beginscherm: eigen icoon, naam en geen adresbalk -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Datechecker">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <span class="brand">Datechecker <span class="zonde">· een app van Zonde.</span></span>
+  <h1 id="page-title">Zoeken</h1>
+  <div class="tablecloth gingham" aria-hidden="true"></div>
+</header>
+
+<button id="update-banner" class="update-banner hidden">Er is een nieuwe versie van de app. <b>Tik om te verversen</b></button>
+
+<div id="storage-warning" class="warning hidden">
+  Deze browser bewaart je gegevens niet. Wat je toevoegt is weg na het sluiten.
+</div>
+
+<main>
+  <!-- ZOEKEN (fase 2) -->
+  <section id="tab-zoeken">
+    <input type="text" class="search" placeholder="Met wie heb je een date vandaag?" disabled>
+    <div class="empty">
+      <p class="label">Voorproefje huisstijl</p>
+      <p class="row" style="gap:10px"><span class="sticker tht">THT</span><span class="sticker tgt">TGT</span><span class="sticker ok">ok!</span></p>
+      <div class="verdict match"><strong>It’s a match!</strong><p>Waarschijnlijk nog goed. Kijk, ruik en proef even.</p></div>
+      <div class="verdict twijfel"><strong>Eerst goed bekijken.</strong><p>Twijfelgeval: let op deze dingen.</p></div>
+      <div class="verdict ghost"><strong>Ghosten.</strong><p>Deze date gaat niet door. Niet meer eten.</p></div>
+    </div>
+  </section>
+
+  <!-- TWEEDE LEVEN (fase 4) -->
+  <section id="tab-tweede-leven" class="hidden">
+    <div class="empty">
+      <h2>Niet je type meer?</h2>
+      <p class="muted">Hier komen ideeën voor eten dat niet meer lekker, maar wel nog goed is.</p>
+    </div>
+  </section>
+
+  <!-- INSTELLINGEN -->
+  <section id="tab-instellingen" class="hidden">
+    <h2>Back-up</h2>
+    <p class="muted small">Op een iPhone wist Safari je gegevens als je de app 7 dagen niet opent, tenzij hij op je beginscherm staat. Een back-up is dus slim. <span id="backup-info"></span></p>
+    <button class="settings-row" id="backup-save"><span>Opslaan als bestand</span><span class="muted">›</span></button>
+    <button class="settings-row" id="backup-restore"><span>Back-up terugzetten</span><span class="muted">›</span></button>
+    <input type="file" id="backup-file" accept="application/json,.json" hidden>
+
+    <h2>Overig</h2>
+    <button class="settings-row" id="settings-welcome"><span>Welkomstscherm opnieuw</span><span class="muted">›</span></button>
+    <button class="settings-row" data-open-privacy><span>Privacy: wat gebeurt er met je gegevens?</span><span class="muted">›</span></button>
+  </section>
+</main>
+
+<nav class="tabbar">
+  <button data-tab="zoeken" class="on">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    Zoeken
+  </button>
+  <button data-tab="tweede-leven">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14zM5 19l7-7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Tweede leven
+  </button>
+  <button data-tab="instellingen">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    Instellingen
+  </button>
+</nav>
+
+<dialog id="privacy-sheet" class="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-body privacy">
+    <h2 class="serif">Privacy</h2>
+    <p><strong>Kort gezegd: deze app verzamelt niets.</strong> Er is geen account, geen reclame en geen tracking. De maker van de app kan niet zien wat jij erin zet.</p>
+
+    <h3>Wat er op je telefoon blijft</h3>
+    <p>Alles wat je in de app zet, en je instellingen. Dat staat alleen in de browser van je eigen telefoon. Verwijder je de app of de websitegegevens, dan is het weg. Daarom kun je een back-up maken; dat bestand bewaar je zelf, waar jij wilt.</p>
+
+    <h3>Diensten die iets zien</h3>
+    <p>Zoals elke website ziet de dienst die de app levert je IP-adres:</p>
+    <ul>
+      <li><b>GitHub Pages</b> levert de app zelf.</li>
+    </ul>
+    <p>De lettertypes zitten in de app zelf; daarvoor wordt geen andere dienst gebruikt.</p>
+
+    <h3>Alles wissen</h3>
+    <p>Verwijder de app van je beginscherm, of wis de websitegegevens in de instellingen van Safari.</p>
+    <p class="muted small">Bijgewerkt op 15 oktober 2026.</p>
+  </div>
+</dialog>
+
+<!-- Welkom (eerste keer) -->
+<dialog id="welcome" class="welcome">
+  <div class="w-step">
+    <span class="brand">Datechecker</span>
+    <h2 class="w-title">Over de datum?<br>Nog niet weg.</h2>
+    <p>Veel eten belandt in de prullenbak terwijl het nog prima is. Zoek je product op en Datechecker vertelt je of je date nog doorgaat, en waar je op let.</p>
+    <button class="btn primary" id="w-start">Let’s go</button>
+    <button class="link w-privacy" data-open-privacy>Wat gebeurt er met je gegevens?</button>
+  </div>
+  <div class="w-step hidden">
+    <span class="brand">1 van 1</span>
+    <h2 class="w-title" id="w-home-title">Zet de app op je beginscherm</h2>
+    <div id="w-homescreen"></div>
+    <button class="btn primary" id="w-done">Aan de slag</button>
+  </div>
+  <div class="w-dots"><span></span><span></span></div>
+</dialog>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/db.js"></script>
+<script src="js/app.js"></script>
+<script src="js/onboarding.js"></script>
+<script src="js/backup.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

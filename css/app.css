@@ -1,0 +1,272 @@
+/* Datechecker, een app van Zonde. Zelfde basis als Fitchecker (crème papier, serif + Inter),
+   met keukenkleuren, supermarktstickers en een geruit tafelkleed. */
+:root {
+  --tomato: #c8432f;
+  --mustard: #e2a72e;
+  --sage: #8fa37e;
+  --tomato-soft: #f5d9d2;
+  --mustard-soft: #f7e6bf;
+  --sage-soft: #dfe7d6;
+  --paper: #f3efe6;
+  --card: #fbf9f4;
+  --ink: #1a1a1a;
+  --muted: #6b665c;
+  --line: #d9d2c3;
+  --soft: #e8e2d5;
+  --danger: #a33a2c;
+  --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --tabbar-h: 62px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { background: var(--paper); }
+body {
+  margin: 0 auto;
+  max-width: 560px;
+  min-height: 100vh;
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.45;
+  background: var(--paper);
+  color: var(--ink);
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-b) + 28px);
+}
+button { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 400; }
+h2 { font-size: 1.15rem; font-weight: 600; }
+.serif { font-family: var(--serif); font-weight: 400; font-size: 1.9rem; letter-spacing: -.01em; }
+.hidden { display: none !important; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.row { display: flex; gap: 8px; }
+.row > .btn { flex: 1; }
+
+/* ---------- Kop en navigatie ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--paper);
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px 10px;
+}
+.brand { display: block; font-size: .68rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+.topbar h1 { font-family: var(--serif); font-size: 2.3rem; line-height: 1.05; letter-spacing: -.01em; margin-top: 2px; }
+main { padding: 0 16px; }
+
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  max-width: 560px; margin: 0 auto;
+  display: flex;
+  height: calc(var(--tabbar-h) + var(--safe-b));
+  padding-bottom: var(--safe-b);
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+.tabbar button {
+  flex: 1; border: 0; background: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  font-size: .7rem; letter-spacing: .04em; color: var(--muted);
+}
+.tabbar svg { width: 23px; height: 23px; }
+.tabbar button.on { color: var(--ink); font-weight: 600; }
+
+/* Ronde knop rechtsonder (bijvoorbeeld "toevoegen") */
+.fab {
+  position: fixed; z-index: 15;
+  right: max(16px, calc(50% - 280px + 16px));
+  bottom: calc(var(--tabbar-h) + var(--safe-b) + 16px);
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ink); color: var(--paper);
+  box-shadow: 0 6px 18px rgba(26, 26, 26, .25);
+}
+
+.warning {
+  margin: 0 16px 12px; padding: 10px 12px; border-radius: 12px;
+  background: #f6dfc4; color: #6b4310; font-size: .9rem;
+}
+
+/* ---------- Knoppen en chips ---------- */
+.btn {
+  display: block; width: 100%;
+  min-height: 48px; padding: 11px 18px;
+  border: 1px solid var(--ink); border-radius: 999px;
+  background: transparent; cursor: pointer; font-weight: 500;
+}
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.danger { color: var(--danger); border-color: var(--danger); }
+.btn.ghost { border-color: transparent; color: var(--muted); }
+.btn.small { width: auto; min-height: 36px; padding: 6px 14px; font-size: .85rem; }
+.btn:disabled { opacity: .35; cursor: default; }
+.link { border: 0; background: none; padding: 6px 0; cursor: pointer; font-size: .85rem; text-decoration: underline; text-underline-offset: 3px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips.scroll-x { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 14px; padding: 0 16px; scrollbar-width: none; }
+.chips.scroll-x::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none;
+  min-height: 36px; padding: 6px 14px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: transparent; cursor: pointer; font-size: .88rem; white-space: nowrap;
+}
+.chip.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+.label { font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; margin: 22px 0 8px; }
+.label .req { color: var(--danger); margin-left: 4px; }
+.label .muted { font-weight: 400; letter-spacing: 0; text-transform: none; font-size: .8rem; }
+
+input[type=text] {
+  width: 100%; min-height: 48px; padding: 10px 14px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--card); color: var(--ink); font: inherit; font-size: 16px; /* 16px voorkomt inzoomen op iPhone */
+}
+
+.empty { text-align: left; padding: 30px 0; }
+.empty h2 { margin-bottom: 8px; }
+.empty p { margin: 0 0 20px; }
+.empty .btn { margin-top: 8px; }
+
+/* Grote keuzekaarten */
+.choice-list { display: grid; gap: 10px; margin-top: 16px; }
+.choice {
+  text-align: left; padding: 18px 16px; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 18px; background: var(--card);
+  transition: transform .12s ease;
+}
+.choice:active { transform: scale(.98); }
+.choice strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.45rem; margin-bottom: 4px; }
+.choice span { color: var(--muted); font-size: .88rem; }
+
+.btn, .chip, .choice { transition: transform .12s ease, background-color .15s, color .15s; }
+.btn:active, .chip:active { transform: scale(.97); }
+
+/* ---------- Sheets (schuiven van onderen omhoog) ---------- */
+dialog.sheet {
+  position: fixed; inset: auto 0 0 0;
+  width: 100%; max-width: 560px; max-height: 92vh; max-height: 92dvh;
+  margin: 0 auto; padding: 0; border: 0;
+  border-radius: 24px 24px 0 0;
+  background: var(--paper); color: var(--ink);
+  display: none; flex-direction: column;
+}
+dialog.sheet:focus { outline: none; }
+dialog.sheet[open] { display: flex; animation: up .22s ease-out; }
+dialog.sheet::backdrop { background: rgba(26, 26, 26, .45); }
+@keyframes up { from { transform: translateY(40px); opacity: 0; } }
+/* Greep: een brede strook bovenaan om aan te slepen; het streepje is alleen de zichtbare hint. */
+.sheet-handle {
+  flex: none; width: 100%; height: 30px; cursor: grab;
+  touch-action: none; display: flex; align-items: center; justify-content: center;
+}
+.sheet-handle::before { content: ""; width: 44px; height: 5px; border-radius: 3px; background: var(--line); }
+.sheet-handle:active::before { background: var(--muted); }
+/* flex-basis "auto" (niet 0): Safari op de iPhone liet het scherm anders inklappen tot een strookje. */
+.sheet-body { overflow-y: auto; padding: 14px 16px 22px; flex: 1 1 auto; min-height: 0; -webkit-overflow-scrolling: touch; }
+.sheet-footer { flex: none; padding: 10px 16px calc(12px + var(--safe-b)); border-top: 1px solid var(--line); }
+
+/* ---------- Welkom ---------- */
+dialog.welcome {
+  position: fixed; inset: 0; width: 100%; max-width: 560px; height: 100vh; height: 100dvh; max-height: none;
+  margin: 0 auto; padding: calc(env(safe-area-inset-top, 0px) + 48px) 24px calc(var(--safe-b) + 28px);
+  border: 0; background: var(--paper); color: var(--ink);
+  display: none; flex-direction: column;
+}
+dialog.welcome[open] { display: flex; }
+dialog.welcome::backdrop { background: var(--paper); }
+.w-step { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+.w-step .btn:first-of-type { margin-top: auto; }
+.w-title { font-family: var(--serif); font-size: 2.6rem; line-height: 1.02; letter-spacing: -.01em; }
+.w-step p { margin: 0; color: var(--muted); font-size: 1rem; }
+.w-step p.w-callout { color: var(--ink); background: var(--soft); border-radius: 14px; padding: 12px 14px; font-size: .95rem; }
+.w-dots { display: flex; justify-content: center; gap: 6px; margin-top: 18px; }
+.w-dots span { width: 8px; height: 3px; border-radius: 2px; background: var(--line); }
+.w-dots span.on { width: 18px; background: var(--ink); }
+.w-privacy { align-self: center; margin-top: 2px; font-size: .9rem; color: var(--muted); }
+
+/* Beginscherm-stap */
+.hs-steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 1.02rem; }
+.hs-steps li::marker { font-weight: 600; }
+.share-icon {
+  display: inline-block; width: 15px; height: 18px; vertical-align: -3px; margin-left: 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 18'%3E%3Cpath d='M7.5 1v11M3.5 5l4-4 4 4M2.5 8H1v9h13V8h-1.5' fill='none' stroke='%231a1a1a' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+#w-homescreen { display: flex; flex-direction: column; gap: 14px; }
+
+/* ---------- Instellingen ---------- */
+#tab-instellingen h2 { margin: 22px 0 6px; }
+#tab-instellingen h2:first-child { margin-top: 4px; }
+.settings-row {
+  display: flex; justify-content: space-between; align-items: center; width: 100%;
+  min-height: 48px; padding: 10px 2px; cursor: pointer; text-align: left;
+  background: none; border: 0; border-bottom: 1px solid var(--line);
+}
+
+/* Privacy */
+.privacy h3 { margin: 18px 0 6px; font-size: 1rem; font-weight: 600; }
+.privacy p, .privacy li { font-size: .95rem; line-height: 1.45; }
+.privacy ul { margin: 6px 0; padding-left: 20px; }
+
+/* ---------- Meldingen ---------- */
+.toast {
+  position: fixed; left: 50%; z-index: 100;
+  bottom: calc(var(--tabbar-h) + var(--safe-b) + 88px);
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--ink); color: var(--paper);
+  padding: 10px 18px; border-radius: 999px; font-size: .88rem;
+  transition: opacity .2s, transform .2s; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* Nieuwe versie */
+.update-banner {
+  position: fixed; z-index: 50; inset: auto; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 8px);
+  width: auto; height: auto; max-width: 536px; margin: 0 auto; padding: 12px 16px; border: 0; border-radius: 14px;
+  background: var(--ink); color: var(--paper); font: inherit; font-size: .92rem; text-align: left;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25); cursor: pointer;
+}
+.update-banner b { display: block; margin-top: 2px; text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Huisstijl Datechecker ---------- */
+/* Geruit tafelkleed: rode banen over crème, donkerder waar ze kruisen. */
+.gingham {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(90deg, rgba(200, 67, 47, .5) 50%, transparent 50%),
+    linear-gradient(rgba(200, 67, 47, .5) 50%, transparent 50%);
+  background-size: 28px 28px;
+}
+/* Strook tafelkleed onder de kop */
+.tablecloth { height: 12px; margin: 10px -16px -10px; }
+.topbar .brand .zonde { letter-spacing: .12em; text-transform: none; font-weight: 500; }
+
+/* Supermarktsticker: THT (mosterd), TGT (tomaat), oké (salie) */
+.sticker {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 6px;
+  font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: #fff; background: var(--ink);
+  box-shadow: 0 1px 0 rgba(0,0,0,.12), 0 2px 6px rgba(58, 26, 16, .15);
+  transform: rotate(-2deg);
+}
+.sticker.tht { background: var(--mustard); color: var(--ink); }
+.sticker.tgt { background: var(--tomato); }
+.sticker.ok { background: var(--sage); border-radius: 999px; }
+
+/* De drie uitkomsten */
+.verdict { padding: 16px; border-radius: 18px; margin: 10px 0; }
+.verdict strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.6rem; line-height: 1.1; }
+.verdict p { margin: 4px 0 0; font-size: .92rem; }
+.verdict.match { background: var(--sage-soft); }
+.verdict.twijfel { background: var(--mustard-soft); }
+.verdict.ghost { background: var(--tomato-soft); }
+
+.search {
+  width: 100%; min-height: 52px; padding: 12px 16px; margin-top: 18px;
+  border: 1px solid var(--ink); border-radius: 999px;
+  background: var(--card); font: inherit; font-size: 16px; color: var(--ink);
+}

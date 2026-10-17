@@ -1,0 +1,9 @@
+# Niet online zetten: plannen (Word), Word-hulpbestanden, testbestanden en instellingen van Claude
+*.docx
+~$*
+*.pdf
+.claude/
+serve.ps1
+
+# Ontwerpbestanden (icoon-bron e.d.): niet online
+ontwerp/
