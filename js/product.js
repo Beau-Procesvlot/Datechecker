@@ -38,6 +38,7 @@ function datumTekst(tijd, dagen) {
   if (dagen < 0) return 'Die datum ligt in de toekomst.';
   const Tijdsduur = tijdsduur[0].toUpperCase() + tijdsduur.slice(1);
   if (tijd === 'open') return dagen === 0 ? 'Vandaag geopend.' : `${Tijdsduur} open.`;
+  if (tijd === 'gekocht') return dagen === 0 ? 'Vandaag gekocht.' : `${Tijdsduur} geleden gekocht.`;
   if (tijd === 'gekookt') return dagen === 0 ? 'Vandaag gekookt.' : `${Tijdsduur} geleden gekookt.`;
   return dagen === 0 ? 'Vandaag ingevroren.' : `${Tijdsduur} in de vriezer.`;
 }

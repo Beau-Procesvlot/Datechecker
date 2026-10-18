@@ -6,4 +6,4 @@ compatibility_date = "2026-10-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "datechecker-teller"
-database_id = "VUL-IN-NA-AANMAKEN"
+database_id = "a3441b90-33a5-4c27-818e-e48e1635185d"

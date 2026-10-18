@@ -17,6 +17,7 @@ const TIJD = {
   open: { vraag: 'Wanneer heb je het opengemaakt?', verleden: true },
   vriezer: { vraag: 'Wanneer heb je het ingevroren?', verleden: true },
   gekookt: { vraag: 'Wanneer heb je het gekookt?', verleden: true },
+  gekocht: { vraag: 'Wanneer heb je het gekocht?', verleden: true },
 };
 
 const CATEGORIEEN = [
@@ -24,7 +25,9 @@ const CATEGORIEEN = [
   { id: 'zuivel', label: 'Zuivel en eieren', kort: 'Zuivel', kleur: '#dfeafb' },
   { id: 'kaas', label: 'Kaas', kort: 'Kaas', kleur: '#fff2b8' },
   { id: 'vlees', label: 'Vlees, vis en vega', kort: 'Vlees en vis', kleur: '#fde0da' },
-  { id: 'groente', label: 'Groente en kant-en-klaar', kort: 'Kant-en-klaar', kleur: '#e3f1df' },
+  { id: 'vers', label: 'Groente en fruit', kort: 'Groente en fruit', kleur: '#e3f1df' },
+  { id: 'groente', label: 'Kant-en-klaar en restjes', kort: 'Kant-en-klaar', kleur: '#e2eefb' },
+  { id: 'diepvries', label: 'Diepvries', kort: 'Diepvries', kleur: '#e2eefb' },
   { id: 'voorraad', label: 'Voorraadkast', kort: 'Voorraad', kleur: '#fde6cf' },
 ];
 
@@ -515,7 +518,7 @@ PRODUCTEN.push(
 
   // ======================= GROENTE EN KANT-EN-KLAAR =======================
   {
-    id: 'sla', naam: 'Sla en voorgesneden groente', kleur: '#e3f1df', categorie: 'groente', datum: 'TGT',
+    id: 'sla', naam: 'Sla en voorgesneden groente', kleur: '#e3f1df', categorie: 'vers', datum: 'TGT',
     zoek: ['sla', 'zakje sla', 'ijsbergsla', 'rucola', 'veldsla', 'spinazie', 'voorgesneden groente', 'roerbakgroente', 'nasigroente', 'bamigroente', 'soepgroente', 'snijbonen gesneden'],
     vragen: [],
     situaties: [S({}, 'datum', 0, 0, 'ghost', 'Voorgesneden groente in een zakje eet je uiterlijk op de datum, het liefst dezelfde dag als je het opent.')],
@@ -732,7 +735,290 @@ PRODUCTEN.push(
   },
 );
 
+// ---------- Uitbreiding: groente en fruit, diepvries en meer voorraad ----------
+// Losse groente en fruit hebben geen datum: je telt vanaf de dag dat je het kocht (tijd 'gekocht').
+const VRIES_LOS = (match, twijfel, tekst) => S({ plek: 'vriezer' }, 'vriezer', match, twijfel, 'twijfel', tekst);
+const VERS_CHECK = ['Kijk naar schimmel of rotte, natte plekken.', 'Voel: slap of rimpelig is niet erg, slijmerig wel.', 'Ruik: zuur of rot betekent weg.'];
+const VERS_WEG = ['Schimmel', 'Rot, nat of slijmerig', 'Een zure of rotte geur'];
+const DIEPVRIES = 'Diepvriesproducten zijn tot een jaar na de datum goed, en vaak langer, zolang de verpakking heel is en het steeds bevroren is gebleven.';
+
+PRODUCTEN.push(
+  // ======================= GROENTE EN FRUIT =======================
+  {
+    id: 'banaan', naam: 'Bananen', kleur: '#fff2b8', categorie: 'vers', datum: 'los',
+    zoek: ['banaan', 'bananen', 'bruine banaan', 'rijpe banaan'],
+    vragen: [{ id: 'plek', label: 'Waar heb je ze bewaard?', opties: [{ id: 'schaal', label: 'Op de fruitschaal' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(240, 365, 'Zonder schil ingevroren blijven bananen 8 tot 12 maanden goed. Perfect voor smoothies of bananenbrood.'),
+      S({ plek: 'schaal' }, 'gekocht', 3, 7, 'twijfel', 'Op de fruitschaal blijven bananen 3 tot 7 dagen lekker. Daarna worden ze bruin en zoeter: ideaal om mee te bakken.'),
+    ],
+    check: ['Een bruine of gevlekte schil is niet erg: de banaan is dan juist extra zoet.', 'Pel hem: zwart, papperig of gistig ruikend vruchtvlees eet je niet meer.'],
+    weg: ['Schimmel', 'Zwart en papperig vanbinnen', 'Ruikt gistig of naar alcohol'],
+    wegUitleg: 'Een bruine schil mag, zwart en papperig vruchtvlees niet.',
+    tip: 'Bewaar bananen buiten de koelkast en apart van ander fruit: daardoor rijpt dat sneller. Folie om de steeltjes houdt ze langer goed.',
+    tweedeLeven: ['Bananenbrood', 'Smoothie', 'Pannenkoekjes van banaan en ei', 'Invriezen voor "nice cream"'],
+    bron: [BRON.bw('banaan')],
+  },
+  {
+    id: 'appel', naam: 'Appels en peren', kleur: '#fde0da', categorie: 'vers', datum: 'los',
+    zoek: ['appel', 'appels', 'peer', 'peren', 'elstar', 'jonagold', 'pink lady'],
+    vragen: [{ id: 'plek', label: 'Waar heb je ze bewaard?', opties: [{ id: 'koel', label: 'In de koelkast' }, { id: 'schaal', label: 'Op de fruitschaal' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(240, 365, 'In partjes ingevroren blijven appels 8 tot 12 maanden goed. Daarna vooral lekker in moes of taart.'),
+      S({ plek: 'koel' }, 'gekocht', 30, 90, 'twijfel', 'In de koelkast blijven appels weken tot maanden goed.'),
+      S({ plek: 'schaal' }, 'gekocht', 7, 14, 'twijfel', 'Op de fruitschaal blijven appels ongeveer een week lekker, daarna worden ze melig.'),
+    ],
+    check: ['Een gerimpelde of melige appel is niet erg: prima voor appelmoes of taart.', 'Snijd een kleine beurse plek ruim weg.', 'Schimmel of rot rond het klokhuis? Dan weg.'],
+    weg: ['Schimmel', 'Groot rot of nat plekje', 'Een gistige geur'],
+    wegUitleg: 'Een kleine beurse plek snijd je weg. Schimmel of rot betekent weg.',
+    tip: 'Appels houden het langst in de groentelade van de koelkast, apart van andere groente en fruit.',
+    tweedeLeven: ['Appelmoes', 'Appeltaart of crumble', 'Gebakken appeltjes met kaneel'],
+    bron: [BRON.bw('appel-met-schil')],
+  },
+  {
+    id: 'aardbeien', naam: 'Aardbeien en bessen', kleur: '#fbd9de', categorie: 'vers', datum: 'los',
+    zoek: ['aardbeien', 'aardbei', 'frambozen', 'blauwe bessen', 'bessen', 'bramen', 'zacht fruit'],
+    vragen: [{ id: 'plek', label: 'Waar heb je ze bewaard?', opties: [{ id: 'koel', label: 'In de koelkast' }, { id: 'schaal', label: 'Op het aanrecht' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(240, 365, 'Ingevroren blijven aardbeien 8 tot 12 maanden goed. Na het ontdooien zijn ze zacht: lekker in smoothies of saus.'),
+      S({ plek: 'koel' }, 'gekocht', 1, 3, 'ghost', 'In de koelkast blijven aardbeien 1 tot 3 dagen goed.'),
+      S({ plek: 'schaal' }, 'gekocht', 1, 1, 'ghost', 'Buiten de koelkast eet je aardbeien dezelfde dag op.'),
+    ],
+    check: ['Kijk het bakje goed door, ook onderin: schimmel verspreidt zich snel.', 'Slappe aardbeien zijn niet erg, beschimmelde wel.'],
+    weg: ['Schimmel', 'Papperig en lekkend'],
+    wegUitleg: 'Gooi beschimmelde aardbeien weg en de aardbeien die ertegenaan lagen ook. De rest kun je goed bekijken.',
+    tip: 'Laat de kroontjes eraan tot je ze eet en bewaar ze droog, bijvoorbeeld op keukenpapier.',
+    tweedeLeven: ['Smoothie', 'Jam of compote', 'Invriezen voor later'],
+    bron: [BRON.bw('aardbeien')],
+  },
+  {
+    id: 'avocado', naam: 'Avocado', kleur: '#e8efd9', categorie: 'vers', datum: 'los',
+    zoek: ['avocado', 'avocados', 'avocado’s'],
+    vragen: [{ id: 'plek', label: 'Waar heb je hem bewaard?', opties: [{ id: 'schaal', label: 'Op de fruitschaal' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(240, 365, 'Gepureerd of in stukjes ingevroren blijft avocado 8 tot 12 maanden goed. Daarna lekker in guacamole of een smoothie.'),
+      S({ plek: 'schaal' }, 'gekocht', 3, 6, 'twijfel', 'Op de fruitschaal is een avocado 1 tot 6 dagen goed, afhankelijk van hoe rijp hij was. Eenmaal rijp kan hij nog wat langer in de koelkast.'),
+    ],
+    check: ['Bruine draadjes of een paar bruine plekjes kun je wegsnijden.', 'Heel zacht, grijs of zuur ruikend vruchtvlees eet je niet.'],
+    weg: ['Schimmel', 'Grotendeels bruin of grijs vanbinnen', 'Een zure of ranzige geur'],
+    wegUitleg: 'Een paar bruine plekjes snijd je weg, een grijze of zure avocado niet.',
+    tip: 'Halve avocado over? Laat de pit erin, dek hem af en zet hem in de koelkast.',
+    tweedeLeven: ['Guacamole', 'Op toast', 'Door een smoothie'],
+    bron: [BRON.bw('avocado')],
+  },
+  {
+    id: 'tomaat', naam: 'Tomaten', kleur: '#fbd9d4', categorie: 'vers', datum: 'los',
+    zoek: ['tomaat', 'tomaten', 'cherrytomaten', 'snoeptomaten', 'trostomaten'],
+    vragen: [{ id: 'plek', label: 'Waar heb je ze bewaard?', opties: [{ id: 'schaal', label: 'Op de fruitschaal of in de koelkast' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(90, 180, 'Kort geblancheerd en ingevroren blijven tomaten 3 maanden goed. Daarna vooral voor saus of soep.'),
+      S({ plek: 'schaal' }, 'gekocht', 7, 14, 'twijfel', 'Buiten de koelkast blijven tomaten ongeveer een week lekker. Zachte tomaten zijn perfect voor saus.'),
+    ],
+    check: ['Zacht of gerimpeld is niet erg: ideaal voor saus of soep.', 'Rotte plekken of schimmel? Dan weg.', 'Eet tomaten pas als ze rijp zijn, niet groen.'],
+    weg: ['Schimmel', 'Rotte, natte plekken'],
+    wegUitleg: 'Zacht mag, rot of beschimmeld niet.',
+    tip: 'Bewaar tomaten buiten de koelkast: in de kou verliezen ze hun smaak.',
+    tweedeLeven: ['Tomatensoep', 'Pastasaus', 'Shakshuka'],
+    bron: [BRON.bw('tomaat-rauw')],
+  },
+  {
+    id: 'komkommer', naam: 'Komkommer', kleur: '#e3f1df', categorie: 'vers', datum: 'los',
+    zoek: ['komkommer', 'komkommers', 'snackkomkommer', 'mini komkommer', 'courgette'],
+    vragen: [{ id: 'open', label: 'Is hij al aangesneden?', opties: [{ id: 'dicht', label: 'Nog heel' }, { id: 'open', label: 'Aangesneden' }] }],
+    situaties: [
+      S({ open: 'open' }, 'open', 2, 3, 'ghost', 'Aangesneden bewaar je hem in de koelkast, en eet je hem binnen 2 dagen op.'),
+      S({ open: 'dicht' }, 'gekocht', 7, 10, 'twijfel', 'Een hele komkommer blijft buiten de koelkast ongeveer een week goed. In de koelkast wordt hij sneller slap.'),
+    ],
+    check: VERS_CHECK, weg: VERS_WEG,
+    wegUitleg: 'Een slijmerige of rotte komkommer eet je niet meer.',
+    tip: 'Laat het krimpfolie eromheen. Een aangesneden stuk: snijvlak op een schoteltje of in een bakje in de koelkast.',
+    tweedeLeven: ['Tzatziki', 'Komkommersalade', 'Door een smoothie'],
+    bron: [BRON.bw('komkommer-met-schil'), BRON.bw('komkommer-zonder-schil')],
+  },
+  {
+    id: 'paprika', naam: 'Paprika', kleur: '#fde0da', categorie: 'vers', datum: 'los',
+    zoek: ['paprika', 'paprikas', 'puntpaprika', 'rode paprika', 'groene paprika'],
+    vragen: [{ id: 'plek', label: 'Waar heb je hem bewaard?', opties: [{ id: 'schaal', label: 'Buiten of in de koelkast' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(365, 540, 'Kort geblancheerd en ingevroren blijft paprika een jaar goed.'),
+      S({ plek: 'schaal' }, 'gekocht', 7, 14, 'twijfel', 'Een hele paprika blijft ongeveer een week goed. Gerimpeld is niet erg: lekker in een gerecht.'),
+    ],
+    check: VERS_CHECK, weg: VERS_WEG,
+    wegUitleg: 'Snijd kleine rotte plekjes ruim weg. Schimmel binnenin? Dan weg.',
+    tip: 'Paprika kan niet goed tegen kou. Een restje bewaar je wel goed afgedekt in de koelkast.',
+    tweedeLeven: ['Geroosterd uit de oven', 'In een pastasaus of soep'],
+    bron: [BRON.bw('paprika-rauw')],
+  },
+  {
+    id: 'aardappelen', naam: 'Aardappelen', kleur: '#f3e1cf', categorie: 'vers', datum: 'los',
+    zoek: ['aardappel', 'aardappelen', 'piepers', 'krieltjes', 'zoete aardappel'],
+    vragen: [],
+    situaties: [S({}, 'gekocht', 30, 60, 'twijfel', 'Op een koele, donkere plek blijven aardappelen ongeveer een maand goed.')],
+    check: ['Groene plekken snijd je ruim weg: daar zit een stof in die je niet wilt eten.', 'Uitlopers (kiemen) mag je wegsnijden, de rest kun je nog eten.', 'Zacht en gerimpeld is niet erg om te koken of pureren.'],
+    weg: ['Schimmel', 'Rot of zacht en nat', 'Grotendeels groen'],
+    wegUitleg: 'Een rotte of grotendeels groene aardappel gooi je weg.',
+    tip: 'Bewaar aardappelen droog, donker en koel, niet naast uien. Gaan ze frituren of bakken? Dan niet in de koelkast.',
+    tweedeLeven: ['Puree of stamppot', 'Aardappelsoep', 'Rösti'],
+    bron: [BRON.bw('aardappelen-rauw')],
+  },
+  {
+    id: 'ui', naam: 'Uien en knoflook', kleur: '#f6e3cf', categorie: 'vers', datum: 'los',
+    zoek: ['ui', 'uien', 'rode ui', 'sjalot', 'knoflook', 'bosui'],
+    vragen: [{ id: 'open', label: 'Is hij al aangesneden?', opties: [{ id: 'dicht', label: 'Nog heel' }, { id: 'open', label: 'Aangesneden' }] }],
+    situaties: [
+      S({ open: 'open' }, 'open', 7, 10, 'ghost', 'Een restje ui bewaar je afgedekt in de koelkast, ongeveer een week.'),
+      S({ open: 'dicht' }, 'gekocht', 60, 90, 'twijfel', 'Hele uien blijven op een droge, donkere plek ongeveer 2 maanden goed.'),
+    ],
+    check: ['Een groen kiempje of een droge buitenschil is niet erg.', 'Zachte, natte of beschimmelde plekken? Dan weg.'],
+    weg: ['Schimmel', 'Zacht en nat', 'Een zure geur (bij gesneden ui)'],
+    wegUitleg: 'Gesneden ui die slap en zuur ruikt, gooi je weg.',
+    tip: 'Bewaar uien buiten de koelkast, niet in een plastic zak en niet naast aardappelen.',
+    tweedeLeven: ['Uiensoep', 'Gekarameliseerde uien'],
+    bron: [BRON.bw('ui-rauw')],
+  },
+  {
+    id: 'wortels', naam: 'Wortels', kleur: '#fde6cf', categorie: 'vers', datum: 'los',
+    zoek: ['wortel', 'wortels', 'worteltjes', 'peen', 'winterpeen', 'bospeen'],
+    vragen: [{ id: 'plek', label: 'Waar heb je ze bewaard?', opties: [{ id: 'schaal', label: 'Koel en donker of in de koelkast' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(365, 540, 'Kort geblancheerd en ingevroren blijven wortels een jaar goed.'),
+      S({ plek: 'schaal' }, 'gekocht', 30, 45, 'twijfel', 'Op een koele, donkere plek blijven wortels ongeveer een maand goed.'),
+    ],
+    check: ['Slap of buigzaam is niet erg: prima om te koken.', 'Zwarte plekken of schimmel? Dan weg.'],
+    weg: ['Schimmel', 'Zwart of slijmerig'],
+    wegUitleg: 'Een slappe wortel mag, een zwarte of slijmerige niet.',
+    tip: 'Bewaar wortels koel en donker. Slappe wortels worden weer stevig in een glas koud water.',
+    tweedeLeven: ['Wortelsoep', 'Wortelcake', 'Geroosterd uit de oven'],
+    bron: [BRON.bw('winterwortel-rauw')],
+  },
+  {
+    id: 'champignons', naam: 'Champignons', kleur: '#f1e6d2', categorie: 'vers', datum: 'los',
+    zoek: ['champignons', 'champignon', 'paddenstoelen', 'kastanjechampignons', 'oesterzwammen'],
+    vragen: [{ id: 'plek', label: 'Waar heb je ze bewaard?', opties: [{ id: 'koel', label: 'In de koelkast' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(90, 180, 'Geblancheerd of gebakken ingevroren blijven champignons 3 maanden goed.'),
+      S({ plek: 'koel' }, 'gekocht', 3, 5, 'ghost', 'In de koelkast blijven champignons ongeveer 3 dagen goed.'),
+    ],
+    check: ['Een paar bruine plekjes zijn niet erg.', 'Slijmerig, slap of zuur ruikend? Dan weg.'],
+    weg: ['Slijmerig', 'Schimmel', 'Een zure geur'],
+    wegUitleg: 'Slijmerige champignons gooi je weg.',
+    tip: 'Bewaar champignons in een papieren zak of een afgesloten bakje, niet in plastic.',
+    tweedeLeven: ['Champignonsoep', 'Roerbakken of door de pastasaus'],
+    bron: [BRON.bw('champignons-rauw')],
+  },
+  {
+    id: 'broccoli', naam: 'Broccoli en kool', kleur: '#e3f1df', categorie: 'vers', datum: 'los',
+    zoek: ['broccoli', 'bloemkool', 'spruitjes', 'kool', 'boerenkool', 'spitskool', 'sperziebonen', 'prei'],
+    vragen: [{ id: 'plek', label: 'Waar heb je het bewaard?', opties: [{ id: 'koel', label: 'In de koelkast' }, { id: 'schaal', label: 'Buiten de koelkast' }, { id: 'vriezer', label: 'In de vriezer' }] }],
+    situaties: [
+      VRIES_LOS(365, 540, 'Kort geblancheerd en ingevroren blijft broccoli een jaar goed.'),
+      S({ plek: 'koel' }, 'gekocht', 3, 5, 'twijfel', 'In de koelkast blijft broccoli 3 tot 5 dagen goed.'),
+      S({ plek: 'schaal' }, 'gekocht', 1, 2, 'twijfel', 'Buiten de koelkast blijft broccoli maar 1 tot 2 dagen goed.'),
+    ],
+    check: ['Een beetje geel worden is niet erg: dan is hij minder lekker, maar nog prima te eten.', 'Slap? Even in koud water zetten.', 'Schimmel of een zure geur? Dan weg.'],
+    weg: ['Schimmel', 'Slijmerig of bruin en nat', 'Een zure geur'],
+    wegUitleg: 'Geel mag, beschimmeld of slijmerig niet.',
+    tip: 'Bewaar broccoli in de koelkast in een open zak of verpakking.',
+    tweedeLeven: ['Broccolisoep', 'Ovenschotel', 'Roerbakken'],
+    bron: [BRON.bw('broccoli-rauw')],
+  },
+
+  // ======================= DIEPVRIES =======================
+  {
+    id: 'ijs', naam: 'IJs', kleur: '#fbe3ea', categorie: 'diepvries', datum: 'THT',
+    zoek: ['ijs', 'roomijs', 'ijsje', 'ben en jerrys', 'magnum', 'waterijs', 'sorbet'],
+    vragen: [VRAAG_OPEN],
+    situaties: [
+      S({ open: 'dicht' }, 'datum', 365, 730, 'twijfel', DIEPVRIES),
+      S({ open: 'open' }, 'open', 90, 180, 'twijfel', 'Een open bak ijs blijft ongeveer 3 maanden lekker in de vriezer. Daarna droogt hij uit en krijg je ijskristallen.'),
+    ],
+    check: ['IJskristallen of uitgedroogde randjes zijn niet gevaarlijk, alleen minder lekker.', 'Is het ijs ontdooid en weer ingevroren? Dan liever niet eten.'],
+    weg: ['Is ontdooid geweest en weer ingevroren', 'Ranzige geur of smaak'],
+    wegUitleg: 'Ontdooid ijs vries je niet opnieuw in.',
+    tip: 'Druk na het opscheppen een stukje bakpapier op het ijs: dan krijg je minder ijskristallen.',
+    tweedeLeven: ['Milkshake', 'Door een smoothie'],
+    bron: [BRON.bw('roomijs')],
+  },
+  {
+    id: 'pizza', naam: 'Diepvriespizza en -maaltijden', kleur: '#fde6cf', categorie: 'diepvries', datum: 'THT',
+    zoek: ['diepvriespizza', 'pizza', 'diepvriesmaaltijd', 'kant-en-klaarmaaltijd diepvries', 'frikandellen', 'kroketten', 'snacks', 'patat', 'friet', 'diepvries'],
+    vragen: [],
+    situaties: [S({}, 'datum', 365, 730, 'twijfel', DIEPVRIES)],
+    check: ['Is de verpakking heel en is het steeds bevroren gebleven?', 'Witte, droge plekken (vriesbrand) zijn niet gevaarlijk, wel minder lekker.', 'Bak of verwarm het altijd helemaal heet.'],
+    weg: ['Is ontdooid geweest en weer ingevroren', 'Kapotte verpakking met vriesbrand overal'],
+    wegUitleg: 'Ontdooid en opnieuw ingevroren? Dan liever niet.',
+    tip: 'Zet je vriezer op -18 °C en schrijf de datum op wat je zelf invriest.',
+    tweedeLeven: [],
+    bron: [BRON.bw('pizza-frutti-di-mare-diepvries')],
+  },
+  {
+    id: 'diepvries-groente', naam: 'Diepvriesgroente en -fruit', kleur: '#e2eefb', categorie: 'diepvries', datum: 'THT',
+    zoek: ['diepvriesgroente', 'diepvriesfruit', 'erwten diepvries', 'spinazie diepvries', 'diepvries spinazie', 'roerbakgroente diepvries', 'bevroren fruit', 'diepvries bessen'],
+    vragen: [],
+    situaties: [S({}, 'datum', 365, 730, 'twijfel', DIEPVRIES)],
+    check: ['Klonteren de stukjes aan elkaar? Dan is het waarschijnlijk een keer ontdooid geweest.', 'Vriesbrand (witte, droge plekken) is niet gevaarlijk, wel minder lekker.'],
+    weg: ['Is ontdooid geweest en weer ingevroren', 'Vreemde geur na het verwarmen'],
+    wegUitleg: 'Ontdooid en opnieuw ingevroren? Dan liever niet.',
+    tip: 'Doe een open zak dicht met een knijper, dan krijg je minder vriesbrand.',
+    tweedeLeven: ['Diepvriesfruit: smoothie of over de yoghurt', 'Diepvriesgroente: soep of roerbakken'],
+    bron: [BRON.bw('pizza-frutti-di-mare-diepvries')],
+  },
+
+  // ======================= VOORRAADKAST (EXTRA) =======================
+  {
+    id: 'bloem', naam: 'Bloem, meel en bakmix', kleur: '#f6f0de', categorie: 'voorraad', datum: 'THT',
+    zoek: ['bloem', 'meel', 'tarwebloem', 'zelfrijzend bakmeel', 'bakmix', 'pannenkoekenmix', 'maizena', 'suiker', 'bakpoeder'],
+    vragen: [],
+    situaties: [S({}, 'datum', 365, 730, 'twijfel', 'Bloem is tot een jaar na de datum goed, en vaak langer, als het droog en goed afgesloten is bewaard.')],
+    check: DROOG_CHECK, weg: DROOG_WEG,
+    wegUitleg: 'Beestjes (meelmotten) in het pak? Weg ermee en de kast goed schoonmaken.',
+    tip: DROOG_TIP,
+    tweedeLeven: [],
+    bron: [BRON.bw('bloem')],
+  },
+  {
+    id: 'olie', naam: 'Olie en azijn', kleur: '#f3f6d8', categorie: 'voorraad', datum: 'THT',
+    zoek: ['olie', 'olijfolie', 'zonnebloemolie', 'frituurolie', 'bakolie', 'azijn', 'sojasaus'],
+    vragen: [],
+    situaties: [S({}, 'datum', 60, 120, 'twijfel', 'Olie is tot zo’n 2 maanden na de datum goed, en vaak langer. Open blijft het ongeveer een jaar goed.')],
+    check: ['Ruik en proef: ranzig, zuur of anders dan normaal betekent dat de olie over is.', 'Donker verkleurd? Niet meer gebruiken.'],
+    weg: ['Ranzige of zure geur', 'Donker verkleurd'],
+    wegUitleg: 'Ranzige olie smaakt vies en gebruik je niet meer.',
+    tip: 'Bewaar olie afgesloten, koel en donker, dus niet naast het fornuis.',
+    tweedeLeven: [],
+    bron: [BRON.bw('olijfolie')],
+  },
+  {
+    id: 'koffie', naam: 'Koffie en thee', kleur: '#efdccd', categorie: 'voorraad', datum: 'THT',
+    zoek: ['koffie', 'koffiebonen', 'gemalen koffie', 'koffiepads', 'cups', 'thee', 'theezakjes', 'oploskoffie'],
+    vragen: [],
+    situaties: [S({}, 'datum', 365, 730, 'twijfel', 'Droge koffie en thee zijn tot een jaar na de datum goed, en vaak langer, als ze droog bewaard zijn. Open verliest koffie na een paar weken wel smaak.')],
+    check: ['Ruik eraan: minder geur betekent minder smaak, niet dat het bedorven is.', 'Vochtig geworden of schimmel? Dan weg.'],
+    weg: ['Schimmel', 'Vochtig geworden'],
+    wegUitleg: 'Vochtige of beschimmelde koffie of thee gooi je weg.',
+    tip: 'Bewaar koffie en thee koel, droog en donker in een goed sluitende pot.',
+    tweedeLeven: ['Oude koffie: in tiramisu of een koffiecake', 'Koffiedik: als plantenvoeding'],
+    bron: [BRON.bw('koffiebonen')],
+  },
+  {
+    id: 'frisdrank', naam: 'Frisdrank', kleur: '#fbd9d4', categorie: 'voorraad', datum: 'THT',
+    zoek: ['frisdrank', 'cola', 'fanta', 'sprite', 'ice tea', 'limonade', 'siroop', 'energiedrank', 'spa'],
+    vragen: [VRAAG_OPEN],
+    situaties: [
+      S({ open: 'dicht' }, 'datum', 365, 730, 'twijfel', 'Een dichte fles of blik frisdrank is tot een jaar na de datum goed, als de verpakking heel is. Soms is de prik er wat af.'),
+      S({ open: 'open' }, 'open', 3, 7, 'twijfel', 'Open blijft frisdrank 3 tot 7 dagen goed in de koelkast. Daarna is vooral de prik eraf.'),
+    ],
+    check: ['Is het blik niet bol, roestig of lekkend?', 'Ruikt of smaakt het anders dan normaal? Niet meer drinken.'],
+    weg: ['Een bol of lekkend blik', 'Smaakt of ruikt anders'],
+    wegUitleg: 'Een bol blik gooi je dicht weg.',
+    tip: 'Zet een open fles goed dicht in de koelkast, dan blijft de prik er langer in.',
+    tweedeLeven: ['Cola zonder prik: in een marinade of saus'],
+    bron: [BRON.bw('cola')],
+  },
+);
+
 const DATUM_UITLEG = {
+  los: { kort: 'Geen datum', uitleg: 'Los gekocht: je telt vanaf de dag dat je het kocht.' },
   THT: { kort: 'Ten minste houdbaar tot', uitleg: 'Een kwaliteitsdatum. Na de datum vaak nog prima: kijk, ruik en proef.' },
   TGT: { kort: 'Te gebruiken tot', uitleg: 'Een veiligheidsdatum. Na de datum niet meer eten, ook als het er goed uitziet.' },
   kies: { kort: 'THT of TGT', uitleg: 'Dit verschilt per merk. Kijk op de verpakking welke datum erop staat.' },
@@ -745,6 +1031,7 @@ const sticker = p => ({
   TGT: '<span class="sticker tgt">TGT</span>',
   kies: '<span class="sticker kies">THT/TGT</span>',
   zelf: '<span class="sticker zelf">Restje</span>',
+  los: '<span class="sticker los">Los</span>',
 })[p.datum];
 
 const productById = id => PRODUCTEN.find(p => p.id === id);

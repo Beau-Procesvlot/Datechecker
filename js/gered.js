@@ -6,7 +6,7 @@
 // - Naar de online teller gaat alleen het gewicht en een willekeurig apparaatnummer, verder niets.
 
 // Adres van de online teller (Cloudflare Worker). Leeg = nog niet online: dan alleen je eigen teller.
-const TELLER_URL = '';
+const TELLER_URL = 'https://datechecker-teller.beau-f5b.workers.dev';
 
 // Geschat gewicht van een gemiddelde verpakking in grammen. Nieuw product? Zet het hier ook bij.
 const GEWICHT = {
@@ -18,6 +18,9 @@ const GEWICHT = {
   sla: 150, hummus: 200, restjes: 400,
   sap: 1000, pasta: 500, rijst: 500, chips: 200, koekjes: 200, cornflakes: 375, pindakaas: 350, jam: 450,
   pastasaus: 400, mayonaise: 500, ketchup: 500, chocolade: 200, 'bonen-blik': 400,
+  banaan: 600, appel: 750, aardbeien: 400, avocado: 200, tomaat: 500, komkommer: 400, paprika: 500,
+  aardappelen: 1000, ui: 500, wortels: 500, champignons: 250, broccoli: 500,
+  ijs: 500, pizza: 350, 'diepvries-groente': 450, bloem: 1000, olie: 500, koffie: 500, frisdrank: 1500,
 };
 const gewichtVan = (p, open) => Math.round((GEWICHT[p.id] || 300) * (open ? 0.5 : 1));
 
