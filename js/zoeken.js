@@ -31,10 +31,21 @@ function zoekScore(p, term) {
   return 0;
 }
 
+let filterCat = null; // gekozen categorie-tegel, of null voor alles
+
+// "Kaas, Goudse (jong of belegen)" → titel "Kaas", ondertitel "Goudse (jong of belegen)".
+function naamDelen(p) {
+  const [titel, ...rest] = p.naam.split(', ');
+  return { titel, sub: rest.join(', ') };
+}
+
 function productKaart(p) {
-  return `<button class="product-card" data-product="${p.id}">
-    <span class="product-name">${esc(p.naam)}</span>
+  const { titel, sub } = naamDelen(p);
+  return `<button class="product-card" data-product="${p.id}" style="--kleur:${p.kleur}">
+    ${icoon(p.id, 'card-icon')}
     <span class="sticker ${p.datum.toLowerCase()}">${p.datum}</span>
+    <span class="product-name">${esc(titel)}</span>
+    ${sub ? `<span class="product-sub">${esc(sub)}</span>` : ''}
   </button>`;
 }
 
@@ -44,17 +55,30 @@ function renderZoeken() {
   if (term.trim()) {
     const hits = PRODUCTEN.map(p => ({ p, s: zoekScore(p, term) })).filter(h => h.s).sort((a, b) => b.s - a.s || a.p.naam.localeCompare(b.p.naam));
     el.innerHTML = hits.length
-      ? `<div class="product-list">${hits.map(h => productKaart(h.p)).join('')}</div>`
-      : `<div class="empty"><h2>Geen match.</h2><p class="muted">"${esc(term)}" staat er nog niet in. De lijst groeit; probeer een algemener woord, zoals "kaas" of "brood".</p></div>`;
+      ? `<div class="product-grid">${hits.map(h => productKaart(h.p)).join('')}</div>`
+      : `<div class="empty">${icoon('ghost', 'empty-icon')}<h2>Geen match.</h2><p class="muted">"${esc(term)}" staat er nog niet in. De lijst groeit; probeer een algemener woord, zoals "kaas" of "brood".</p></div>`;
   } else {
-    const recentHTML = recent.length
-      ? `<p class="label">Onlangs opgezocht</p><div class="chips">${recent.map(id => productById(id)).filter(Boolean).map(p => `<button class="chip" data-product="${p.id}">${esc(p.naam)}</button>`).join('')}</div>`
+    const banner = `<button class="info-banner" id="open-info">
+      <span class="info-text"><b>THT of TGT?</b><span>Het verschil bepaalt of je date doorgaat.</span><span class="info-link">Lees hoe het zit</span></span>
+      <span class="info-stickers"><span class="sticker tht">THT</span><span class="sticker tgt">TGT</span></span>
+    </button>`;
+    const tegels = `<div class="section-head"><h2>Categorieën</h2></div>
+      <div class="cat-row">${CATEGORIEEN.map(c => `<button class="cat-tile ${filterCat === c.id ? 'on' : ''}" data-cat="${c.id}" style="--kleur:${c.kleur}">
+        <span class="cat-icon">${icoon('cat-' + c.id)}</span><span>${c.kort}</span></button>`).join('')}</div>`;
+    const recentLijst = recent.map(id => productById(id)).filter(Boolean);
+    const recentHTML = recentLijst.length && !filterCat
+      ? `<div class="section-head"><h2>Onlangs opgezocht</h2></div>
+         <div class="recent-row">${recentLijst.map(p => `<button class="recent-card" data-product="${p.id}" style="--kleur:${p.kleur}">${icoon(p.id)}<span>${esc(naamDelen(p).titel)}</span></button>`).join('')}</div>`
       : '';
-    const perCategorie = CATEGORIEEN.map(c => {
-      const lijst = PRODUCTEN.filter(p => p.categorie === c.id);
-      return lijst.length ? `<p class="label">${c.label}</p><div class="product-list">${lijst.map(productKaart).join('')}</div>` : '';
-    }).join('');
-    el.innerHTML = recentHTML + perCategorie;
+    const lijst = PRODUCTEN.filter(p => !filterCat || p.categorie === filterCat);
+    const titel = filterCat ? CATEGORIEEN.find(c => c.id === filterCat).label : 'Alle producten';
+    const grid = `<div class="section-head"><h2>${titel}</h2>${filterCat ? '<button class="pill-link" id="clear-cat">Alles tonen</button>' : ''}</div>
+      <div class="product-grid">${lijst.map(productKaart).join('')}</div>`;
+    el.innerHTML = banner + tegels + recentHTML + grid;
+    $('#open-info').onclick = () => $('#info-sheet').showModal();
+    el.querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { filterCat = filterCat === b.dataset.cat ? null : b.dataset.cat; renderZoeken(); });
+    const clear = $('#clear-cat');
+    if (clear) clear.onclick = () => { filterCat = null; renderZoeken(); };
   }
   el.querySelectorAll('[data-product]').forEach(b => b.onclick = () => openProduct(b.dataset.product));
 }

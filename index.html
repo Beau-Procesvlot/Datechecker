@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f3efe6">
+<meta name="theme-color" content="#f7f5ef">
 <title>Datechecker</title>
 <!-- Op het beginscherm: eigen icoon, naam en geen adresbalk -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -20,9 +20,12 @@
 <body>
 
 <header class="topbar">
-  <span class="brand">Datechecker <span class="zonde">· een app van Zonde.</span></span>
-  <h1 id="page-title">Zoeken</h1>
-  <div class="tablecloth gingham" aria-hidden="true"></div>
+  <div class="brand-row">
+    <img class="brand-icon" src="icons/icon-192.png" alt="">
+    <span class="brand">Datechecker</span>
+    <span class="zonde">een app van Zonde.</span>
+  </div>
+  <h1 id="page-title"></h1>
 </header>
 
 <button id="update-banner" class="update-banner hidden">Er is een nieuwe versie van de app. <b>Tik om te verversen</b></button>
@@ -34,7 +37,10 @@
 <main>
   <!-- ZOEKEN -->
   <section id="tab-zoeken">
-    <input type="search" id="search" class="search" placeholder="Met wie heb je een date vandaag?" autocomplete="off" enterkeyhint="search">
+    <label class="search-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="search" id="search" class="search" placeholder="Zoek een product, bv. yoghurt" autocomplete="off" enterkeyhint="search" aria-label="Zoek een product">
+    </label>
     <div id="search-results"></div>
   </section>
 
@@ -61,24 +67,24 @@
 </main>
 
 <nav class="tabbar">
-  <button data-tab="zoeken" class="on">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-    Zoeken
+  <button data-tab="zoeken" class="on" aria-label="Zoeken">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span>Zoeken</span>
   </button>
-  <button data-tab="tweede-leven">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14zM5 19l7-7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Tweede leven
+  <button data-tab="tweede-leven" aria-label="Tweede leven">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14zM5 19l7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Tweede leven</span>
   </button>
-  <button data-tab="instellingen">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-    Instellingen
+  <button data-tab="instellingen" aria-label="Instellingen">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    <span>Instellingen</span>
   </button>
 </nav>
 
 <dialog id="privacy-sheet" class="sheet">
   <div class="sheet-handle"></div>
   <div class="sheet-body privacy">
-    <h2 class="serif">Privacy</h2>
+    <h2 class="sheet-title">Privacy</h2>
     <p><strong>Kort gezegd: deze app verzamelt niets.</strong> Er is geen account, geen reclame en geen tracking. De maker van de app kan niet zien wat jij erin zet.</p>
 
     <h3>Wat er op je telefoon blijft</h3>
@@ -115,16 +121,43 @@
   <div class="w-dots"><span></span><span></span></div>
 </dialog>
 
-<!-- Productpagina -->
-<dialog id="product-sheet" class="sheet tall">
+<!-- Productpagina: schermvullend, met een gekleurd vlak bovenaan -->
+<dialog id="product-sheet" class="product-view">
+  <div class="hero gingham-soft" id="product-hero">
+    <button class="back" id="product-back" aria-label="Terug">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="product-hero-icon"></div>
+  </div>
+  <div class="panel product" id="product-body"></div>
+</dialog>
+
+<!-- Uitleg THT en TGT -->
+<dialog id="info-sheet" class="sheet">
   <div class="sheet-handle"></div>
-  <div class="sheet-body product" id="product-body"></div>
+  <div class="sheet-body info">
+    <h2 class="sheet-title">Twee soorten datums</h2>
+    <div class="info-card tht">
+      <span class="sticker tht">THT</span>
+      <h3>Ten minste houdbaar tot</h3>
+      <p>Een kwaliteitsdatum. Tot die datum is het op z’n best. Daarna is het vaak nog prima: kijk, ruik en proef. Hier valt de meeste winst te halen.</p>
+      <p class="muted small">Bijvoorbeeld: brood, yoghurt, kaas, eieren, pasta, rijst, koekjes.</p>
+    </div>
+    <div class="info-card tgt">
+      <span class="sticker tgt">TGT</span>
+      <h3>Te gebruiken tot</h3>
+      <p>Een veiligheidsdatum. Na de datum eet je het niet meer, ook als het er goed uitziet. Ziekmakende bacteriën zie of ruik je niet. Wel kun je het vóór de datum invriezen.</p>
+      <p class="muted small">Bijvoorbeeld: vers vlees, kip, vis, vleeswaren.</p>
+    </div>
+    <p class="source">Bron: <a href="https://www.voedingscentrum.nl/encyclopedie/houdbaarheidsdatums-tht-tgt.aspx" target="_blank" rel="noopener">Voedingscentrum</a></p>
+  </div>
 </dialog>
 
 <div id="toast" class="toast"></div>
 
 <script src="js/db.js"></script>
 <script src="js/app.js"></script>
+<script src="js/iconen.js"></script>
 <script src="js/producten.js"></script>
 <script src="js/zoeken.js"></script>
 <script src="js/product.js"></script>

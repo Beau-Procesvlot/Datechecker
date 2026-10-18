@@ -10,7 +10,7 @@ function openProduct(id) {
   huidig = { p, antw, datum: '', weg: new Set() };
   renderProduct();
   $('#product-sheet').showModal();
-  $('#product-body').scrollTop = 0;
+  $('#product-sheet').scrollTop = 0;
   onthoudRecent(id).then(() => { if (!$('#search').value.trim()) renderZoeken(); });
 }
 
@@ -27,15 +27,18 @@ const dagenSinds = datum => Math.round((new Date(today()) - new Date(datum)) / 8
 
 function datumTekst(tijd, dagen) {
   const n = Math.abs(dagen);
-  const d = n === 1 ? 'dag' : 'dagen';
+  // Vanaf twee weken in weken, vanaf twee maanden in maanden: "ruim 3 maanden" leest makkelijker dan "109 dagen".
+  const tijdsduur = n >= 60 ? `${n % 30 > 7 ? 'ruim ' : ''}${Math.floor(n / 30)} maanden`
+    : n >= 14 ? `${n % 7 > 1 ? 'ruim ' : ''}${Math.floor(n / 7)} weken`
+    : `${n} ${n === 1 ? 'dag' : 'dagen'}`;
   if (tijd === 'datum') {
     if (dagen === 0) return 'Dat is vandaag.';
-    return dagen < 0 ? `Nog ${n} ${d} te gaan.` : `${n} ${d} over de datum.`;
+    return dagen < 0 ? `Nog ${tijdsduur} te gaan.` : `${tijdsduur[0].toUpperCase()}${tijdsduur.slice(1)} over de datum.`;
   }
   if (dagen < 0) return 'Die datum ligt in de toekomst.';
-  const tijdsduur = n >= 60 ? `${Math.round(n / 30)} maanden` : n >= 14 ? `${Math.round(n / 7)} weken` : `${n} ${d}`;
-  if (tijd === 'open') return dagen === 0 ? 'Vandaag geopend.' : `${tijdsduur} open.`;
-  return dagen === 0 ? 'Vandaag ingevroren.' : `${tijdsduur} in de vriezer.`;
+  const Tijdsduur = tijdsduur[0].toUpperCase() + tijdsduur.slice(1);
+  if (tijd === 'open') return dagen === 0 ? 'Vandaag geopend.' : `${Tijdsduur} open.`;
+  return dagen === 0 ? 'Vandaag ingevroren.' : `${Tijdsduur} in de vriezer.`;
 }
 
 // Het oordeel. Tekenen van bederf gaan altijd voor de datum.
@@ -66,14 +69,17 @@ function renderProduct() {
   const tijd = TIJD[sit.tijd];
   const cat = CATEGORIEEN.find(c => c.id === p.categorie);
   const d = DATUM_UITLEG[p.datum];
+  $('#product-hero').style.setProperty('--kleur', p.kleur);
+  $('#product-hero-icon').innerHTML = icoon(p.id, 'hero-icon');
 
   const vragenHTML = p.vragen.filter(v => vraagZichtbaar(v, antw)).map(v => `
     <p class="label">${esc(v.label)}</p>
     <div class="chips">${v.opties.map(op => `<button class="chip ${antw[v.id] === op.id ? 'on' : ''}" data-vraag="${v.id}" data-optie="${op.id}">${esc(op.label)}</button>`).join('')}</div>`).join('');
 
   $('#product-body').innerHTML = `
-    <span class="brand">${cat ? cat.label : ''}</span>
-    <h2 class="product-title">${esc(p.naam)}</h2>
+    ${cat && cat.kort !== naamDelen(p).titel ? `<span class="kicker">${cat.label}</span>` : ''}
+    <h2 class="product-title">${esc(naamDelen(p).titel)}</h2>
+    ${naamDelen(p).sub ? `<p class="product-sub-title">${esc(naamDelen(p).sub)}</p>` : ''}
     <div class="date-type"><span class="sticker ${p.datum.toLowerCase()}">${p.datum}</span><p><b>${d.kort}.</b> ${d.uitleg}</p></div>
 
     ${vragenHTML}
@@ -109,7 +115,7 @@ function renderOordeel() {
   $('#p-datum-tekst').textContent = dagen == null ? '' : datumTekst(sit.tijd, dagen);
 
   const oordeelHTML = o
-    ? `<div class="verdict ${o.type}" id="verdict"><strong>${o.titel}</strong><p>${esc(o.tekst)}</p></div>`
+    ? `<div class="verdict ${o.type}" id="verdict">${icoon(o.type, 'verdict-icon')}<div><strong>${o.titel}</strong><p>${esc(o.tekst)}</p></div></div>`
     : `<div class="verdict leeg" id="verdict"><p>Vul de datum in, dan zie je of je date doorgaat.</p></div>`;
 
   const bronnen = `<p class="source">Bron: ${p.bron.map(b => `<a href="${b.url}" target="_blank" rel="noopener">${esc(b.naam)}</a>`).join(' · ')}</p>`;
@@ -146,3 +152,5 @@ function renderOordeel() {
   });
   if (o) $('#verdict').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+
+$('#product-back').onclick = () => $('#product-sheet').close();

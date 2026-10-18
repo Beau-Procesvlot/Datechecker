@@ -19,10 +19,10 @@ const TIJD = {
 };
 
 const CATEGORIEEN = [
-  { id: 'brood', label: 'Brood en bakkerij' },
-  { id: 'zuivel', label: 'Zuivel en eieren' },
-  { id: 'kaas', label: 'Kaas' },
-  { id: 'vlees', label: 'Vlees, vis en kip' },
+  { id: 'brood', label: 'Brood', kort: 'Brood', kleur: '#fdecc8' },
+  { id: 'zuivel', label: 'Zuivel en eieren', kort: 'Zuivel', kleur: '#dfeafb' },
+  { id: 'kaas', label: 'Kaas', kort: 'Kaas', kleur: '#fff2b8' },
+  { id: 'vlees', label: 'Vlees, vis en kip', kort: 'Vlees en vis', kleur: '#fde0da' },
 ];
 
 const BRON = {
@@ -38,6 +38,7 @@ const PRODUCTEN = [
   {
     id: 'afbakbroodjes',
     naam: 'Afbakbroodjes',
+    kleur: '#fdecc8',
     zoek: ['afbak', 'afbakbrood', 'pistolets', 'bake off', 'stokbrood afbak', 'petit pain', 'broodjes'],
     categorie: 'brood',
     datum: 'THT',
@@ -68,6 +69,7 @@ const PRODUCTEN = [
   {
     id: 'kaas-goudse',
     naam: 'Kaas, Goudse (jong of belegen)',
+    kleur: '#fff2b8',
     zoek: ['kaas', 'goudse', 'jonge kaas', 'belegen kaas', 'jong belegen', 'kaasplakken', 'plakken kaas', 'geraspte kaas', 'edammer', 'boerenkaas', 'halfzachte kaas', 'harde kaas'],
     categorie: 'kaas',
     datum: 'THT',
@@ -103,6 +105,7 @@ const PRODUCTEN = [
   {
     id: 'kipfilet',
     naam: 'Kipfilet, rauw',
+    kleur: '#fde0da',
     zoek: ['kip', 'kipfilet', 'kippenvlees', 'kipreepjes', 'kippendijen', 'kipblokjes', 'gevogelte'],
     categorie: 'vlees',
     datum: 'TGT',
@@ -131,6 +134,7 @@ const PRODUCTEN = [
   {
     id: 'yoghurt',
     naam: 'Yoghurt',
+    kleur: '#dfeafb',
     zoek: ['yoghurt', 'yogurt', 'griekse yoghurt', 'volle yoghurt', 'magere yoghurt', 'kwark', 'skyr'],
     categorie: 'zuivel',
     datum: 'THT',
@@ -157,6 +161,7 @@ const PRODUCTEN = [
   {
     id: 'eieren',
     naam: 'Eieren',
+    kleur: '#f3eadb',
     zoek: ['ei', 'eieren', 'eitjes', 'scharreleieren', 'vrije-uitloopeieren', 'biologische eieren'],
     categorie: 'zuivel',
     datum: 'THT',
