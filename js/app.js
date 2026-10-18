@@ -103,13 +103,14 @@ async function saveProfile() {
 }
 
 // ---------- Tabs ----------
-const TAB_TITLES = { zoeken: 'Met wie heb je een <em>date</em> vandaag?', 'tweede-leven': 'Niet je type meer?', instellingen: 'Instellingen' };
+const TAB_TITLES = { zoeken: 'Met wie heb je een <em>date</em> vandaag?', tips: 'Dating <em>tips</em>', 'tweede-leven': 'Niet je type meer?', instellingen: 'Instellingen' };
 
 function showTab(name) {
   document.querySelectorAll('.tabbar button').forEach(b => b.classList.toggle('on', b.dataset.tab === name));
   document.querySelectorAll('main > section').forEach(s => s.classList.toggle('hidden', s.id !== 'tab-' + name));
   $('#page-title').innerHTML = TAB_TITLES[name];
   window.scrollTo(0, 0);
+  if (name === 'tips') renderTips();
   if (name === 'instellingen') renderSettings();
 }
 document.querySelectorAll('.tabbar button').forEach(b => b.onclick = () => showTab(b.dataset.tab));

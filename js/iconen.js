@@ -56,6 +56,15 @@ const ICONEN = {
     <path d="M33 36l13 13" stroke="#f6efe2" stroke-width="6" stroke-linecap="round"/>
     <circle cx="49" cy="47" r="4" fill="#f6efe2"/><circle cx="45" cy="52" r="4" fill="#f6efe2"/>`,
 
+  'cat-koelkast': `
+    <rect x="16" y="6" width="32" height="52" rx="6" fill="#fff"/>
+    <rect x="16" y="6" width="32" height="52" rx="6" fill="none" stroke="#a9cfa6" stroke-width="2.5"/>
+    <path d="M16 24h32" stroke="#a9cfa6" stroke-width="2.5"/>
+    <path d="M22 13v6M22 30v10" stroke="#7cb87e" stroke-width="3.5" stroke-linecap="round"/>`,
+  'cat-vriezer': `
+    <path d="M32 8v48M11 20l42 24M11 44l42-24" stroke="#5b8fd4" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M26 12l6 5 6-5M26 52l6-5 6 5M10 28l8-2-2-8M54 36l-8 2 2 8M10 36l8 2-2 8M54 28l-8-2 2-8" stroke="#86b4e8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`,
+
   // ---------- Oordelen ----------
   match: `
     <path d="M32 54C24 48 8 38 8 24c0-8 6-14 13-14 5 0 9 3 11 7 2-4 6-7 11-7 7 0 13 6 13 14 0 14-16 24-24 30z" fill="#e4574a"/>

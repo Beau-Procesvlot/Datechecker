@@ -194,7 +194,11 @@ input[type=search]::-webkit-search-decoration { -webkit-appearance: none; }
 .recent-card svg { width: 36px; height: 36px; padding: 4px; border-radius: 11px; background: var(--kleur); }
 
 /* Productkaarten: twee kolommen */
-.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+.grid-col { display: flex; flex-direction: column; gap: 12px; }
+.grid-col:nth-child(2) { margin-top: 44px; }
+/* Net niet even hoog, voor het speelse om-en-om-effect */
+.grid-col:nth-child(1) .product-card:nth-child(even), .grid-col:nth-child(2) .product-card:nth-child(odd) { min-height: 188px; }
 .product-card {
   position: relative; display: flex; flex-direction: column; align-items: flex-start;
   min-height: 168px; padding: 14px; border: 0; border-radius: var(--radius); cursor: pointer; text-align: left;
@@ -399,3 +403,19 @@ dialog.welcome::backdrop { background: var(--bg); }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 .product-sub-title { margin: -10px 0 14px !important; font-size: 1rem; color: var(--muted); font-weight: 600; }
+
+/* ---------- Dating tips ---------- */
+.tab-intro { margin: 0 0 16px; color: var(--muted); font-size: .95rem; }
+.tip-filter { margin: 18px -20px 14px; padding: 0 20px; }
+.chips.scroll-x { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.chips.scroll-x::-webkit-scrollbar { display: none; }
+.tip-list { display: grid; gap: 12px; }
+.tip-card { padding: 16px 18px; border-radius: var(--radius); background: var(--kleur); }
+.tip-card.featured { padding: 20px; box-shadow: var(--shadow); }
+.tip-card.featured h3 { font-size: 1.35rem; }
+.tip-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.tip-icon { width: 34px; height: 34px; padding: 3px; border-radius: 11px; background: rgba(255,255,255,.7); }
+.tip-cat { font-size: .78rem; font-weight: 700; color: var(--muted); }
+.tip-card h3 { font-size: 1.12rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 4px; }
+.tip-card p { margin: 0; font-size: .93rem; }
+.tip-source { display: inline-block; margin-top: 8px; font-size: .74rem; color: var(--muted); }

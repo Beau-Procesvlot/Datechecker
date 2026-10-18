@@ -49,13 +49,19 @@ function productKaart(p) {
   </button>`;
 }
 
+// Twee kolommen om en om: de rechterkolom begint wat lager, zoals een Pinterest-raster.
+function raster(lijst) {
+  const kolom = rest => `<div class="grid-col">${lijst.filter((_, i) => i % 2 === rest).map(productKaart).join('')}</div>`;
+  return `<div class="product-grid">${kolom(0)}${kolom(1)}</div>`;
+}
+
 function renderZoeken() {
   const term = $('#search').value;
   const el = $('#search-results');
   if (term.trim()) {
     const hits = PRODUCTEN.map(p => ({ p, s: zoekScore(p, term) })).filter(h => h.s).sort((a, b) => b.s - a.s || a.p.naam.localeCompare(b.p.naam));
     el.innerHTML = hits.length
-      ? `<div class="product-grid">${hits.map(h => productKaart(h.p)).join('')}</div>`
+      ? raster(hits.map(h => h.p))
       : `<div class="empty">${icoon('ghost', 'empty-icon')}<h2>Geen match.</h2><p class="muted">"${esc(term)}" staat er nog niet in. De lijst groeit; probeer een algemener woord, zoals "kaas" of "brood".</p></div>`;
   } else {
     const banner = `<button class="info-banner" id="open-info">
@@ -73,7 +79,7 @@ function renderZoeken() {
     const lijst = PRODUCTEN.filter(p => !filterCat || p.categorie === filterCat);
     const titel = filterCat ? CATEGORIEEN.find(c => c.id === filterCat).label : 'Alle producten';
     const grid = `<div class="section-head"><h2>${titel}</h2>${filterCat ? '<button class="pill-link" id="clear-cat">Alles tonen</button>' : ''}</div>
-      <div class="product-grid">${lijst.map(productKaart).join('')}</div>`;
+      ${raster(lijst)}`;
     el.innerHTML = banner + tegels + recentHTML + grid;
     $('#open-info').onclick = () => $('#info-sheet').showModal();
     el.querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { filterCat = filterCat === b.dataset.cat ? null : b.dataset.cat; renderZoeken(); });

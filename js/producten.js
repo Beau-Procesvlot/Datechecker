@@ -161,7 +161,7 @@ const PRODUCTEN = [
   {
     id: 'eieren',
     naam: 'Eieren',
-    kleur: '#f3eadb',
+    kleur: '#e4edf8',
     zoek: ['ei', 'eieren', 'eitjes', 'scharreleieren', 'vrije-uitloopeieren', 'biologische eieren'],
     categorie: 'zuivel',
     datum: 'THT',
