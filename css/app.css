@@ -470,3 +470,4 @@ dialog.welcome::backdrop { background: var(--bg); }
   background: var(--green-dark); color: #fff; font-weight: 800; font-size: .8rem;
 }
 .saved-row { margin-top: 0; }
+.w-mascot { width: 150px; height: 150px; border-radius: 34px; box-shadow: var(--shadow); margin-bottom: 6px; }
