@@ -441,7 +441,7 @@ PRODUCTEN.push(
     check: VLEES_CHECK,
     weg: VLEES_WEG, wegUitleg: 'Vleeswaren zijn gevoelig voor listeria. Die zie, ruik en proef je niet.',
     tip: 'Bewaar vleeswaren op de koudste plek in de koelkast (vaak de onderste plank), in een afsluitbaar bakje.',
-    tweedeLeven: ['In een omelet of quiche', 'Op een tosti of pizza (wel binnen de datum)'],
+    tweedeLeven: [],
     bron: [BRON.bw('kipfilet-vleeswaar'), BRON.bw('beenham')],
   },
   {
@@ -456,7 +456,7 @@ PRODUCTEN.push(
     check: VLEES_CHECK,
     weg: VLEES_WEG, wegUitleg: 'Vleeswaren zijn gevoelig voor listeria. Die zie, ruik en proef je niet.',
     tip: 'Bewaar het op de koudste plek in de koelkast, in een afsluitbaar bakje of de eigen verpakking.',
-    tweedeLeven: ['Op een pizza of in een pastasaus (wel binnen de datum)'],
+    tweedeLeven: [],
     bron: [BRON.bw('salami')],
   },
   {
@@ -472,7 +472,7 @@ PRODUCTEN.push(
     check: VLEES_CHECK,
     weg: VLEES_WEG, wegUitleg: VLEES_UITLEG,
     tip: 'Rookworst kan prima de vriezer in, tot 3 maanden. Ontdooi in de koelkast en verwarm hem goed.',
-    tweedeLeven: ['Door de stamppot of erwtensoep', 'In plakjes in een pastasaus'],
+    tweedeLeven: [],
     bron: [BRON.bw('rookworst-ambachtelijk-gekookt'), BRON.vc],
   },
   {

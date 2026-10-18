@@ -25,9 +25,9 @@ const RECEPTEN = [
   },
   {
     id: 'frittata', titel: 'Frittata uit de oven', tijd: '30 min', icoon: 'eieren', kleur: '#e4edf8',
-    redt: ['eieren', 'restjes', 'kaas-goudse', 'vleeswaren', 'creme-fraiche'],
-    intro: 'Een omelet uit de oven waar je bijna elk restje in kwijt kunt: pasta, groente, kaas of ham.',
-    ingredienten: ['6 eieren', 'Restjes: gekookte pasta, groente, ham of kaas', 'Scheutje melk of een lepel crème fraîche', 'Zout en peper'],
+    redt: ['eieren', 'restjes', 'kaas-goudse', 'creme-fraiche'],
+    intro: 'Een omelet uit de oven waar je bijna elk restje in kwijt kunt: pasta, groente of kaas.',
+    ingredienten: ['6 eieren', 'Restjes: gekookte pasta, groente of kaas', 'Scheutje melk of een lepel crème fraîche', 'Zout en peper'],
     stappen: ['Verwarm de oven voor op 180 °C.', 'Klop de eieren los met de melk, zout en peper.', 'Verdeel de restjes over een ingevette ovenschaal en giet de eieren erover. Strooi er kaas over.', 'Bak 20 tot 25 minuten, tot het ei in het midden helemaal gestold is.'],
   },
   {
@@ -72,13 +72,13 @@ function receptKaart(r) {
 }
 
 function renderTweedeLeven() {
-  // Alleen producten met ideeën; vlees en vis na de datum krijgen geen tweede kans.
-  const metIdeeen = PRODUCTEN.filter(p => p.tweedeLeven.length);
+  // Vlees, vis en vleeswaren krijgen nooit een tweede leven: te veel risico als ze niet meer goed smaken.
+  const metIdeeen = PRODUCTEN.filter(p => p.tweedeLeven.length && p.categorie !== 'vlees');
   const cats = CATEGORIEEN.filter(c => metIdeeen.some(p => p.categorie === c.id));
   const lijst = metIdeeen.filter(p => !tlFilter || p.categorie === tlFilter);
 
   $('#tl-body').innerHTML = `
-    <div class="tl-note">${icoon('match', 'tl-note-icon')}<p><b>Alleen voor eten dat nog goed is.</b> Niet meer op z’n best, wel nog te eten? Check het eerst bij Zoeken. Wat “Ghosten” krijgt, krijgt geen tweede kans.</p></div>
+    <div class="tl-note">${icoon('match', 'tl-note-icon')}<p><b>Alleen voor eten dat nog goed is.</b> Niet meer op z’n best, wel nog te eten? Check het eerst bij Zoeken. Wat “Ghosten” krijgt, krijgt geen tweede kans. Vlees, vis en vleeswaren nooit: smaakt het niet meer goed, dan gaat het weg.</p></div>
 
     <div class="section-head"><h2>Recepten</h2></div>
     <div class="recipe-row">${RECEPTEN.map(receptKaart).join('')}</div>
@@ -106,6 +106,7 @@ function renderTweedeLeven() {
 
 // Knopjes naar de recepten waarin dit product gered wordt (ook gebruikt op de productpagina).
 function receptKnoppen(productId) {
+  if (productById(productId)?.categorie === 'vlees') return '';
   const r = RECEPTEN.filter(x => x.redt.includes(productId));
   return r.length ? `<div class="recipe-links">${r.map(x => `<button class="pill-link recipe-link" data-recept="${x.id}">Recept: ${esc(x.titel)}</button>`).join('')}</div>` : '';
 }
