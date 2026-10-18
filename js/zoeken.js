@@ -81,7 +81,8 @@ function renderZoeken() {
     const titel = filterCat ? CATEGORIEEN.find(c => c.id === filterCat).label : 'Alle producten';
     const grid = `<div class="section-head"><h2>${titel}</h2>${filterCat ? '<button class="pill-link" id="clear-cat">Alles tonen</button>' : ''}</div>
       ${raster(lijst)}`;
-    el.innerHTML = banner + tegels + recentHTML + grid;
+    el.innerHTML = vraagHTML() + tellerHTML() + banner + tegels + recentHTML + grid;
+    koppelVraag(el);
     $('#open-info').onclick = () => $('#info-sheet').showModal();
     el.querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { filterCat = filterCat === b.dataset.cat ? null : b.dataset.cat; renderZoeken(); });
     const clear = $('#clear-cat');

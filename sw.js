@@ -9,7 +9,7 @@ const SHELL = [
   'css/fonts.css', 'css/app.css',
   'fonts/DMSerifDisplay.woff2', 'fonts/Inter.woff2',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
-  'js/db.js', 'js/app.js', 'js/iconen.js', 'js/producten.js', 'js/zoeken.js', 'js/product.js', 'js/tips.js', 'js/tweedeleven.js',
+  'js/db.js', 'js/app.js', 'js/iconen.js', 'js/producten.js', 'js/zoeken.js', 'js/product.js', 'js/tips.js', 'js/tweedeleven.js', 'js/gered.js',
   'js/onboarding.js', 'js/backup.js', 'js/pwa.js',
 ];
 

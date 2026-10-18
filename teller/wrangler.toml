@@ -1,0 +1,9 @@
+# Cloudflare Worker voor de gered-teller. Online zetten: npx wrangler deploy (vanuit deze map).
+name = "datechecker-teller"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "datechecker-teller"
+database_id = "VUL-IN-NA-AANMAKEN"

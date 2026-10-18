@@ -7,7 +7,7 @@ function openProduct(id) {
   if (!p) return;
   // Elke vraag begint op de eerste keuze, zodat er altijd een situatie is.
   const antw = Object.fromEntries(p.vragen.map(v => [v.id, v.opties[0].id]));
-  huidig = { p, antw, datum: '', weg: new Set() };
+  huidig = { p, antw, datum: '', weg: new Set(), vraagGetoond: false, besluit: null, checkId: null };
   renderProduct();
   if (!$('#product-sheet').open) $('#product-sheet').showModal();
   $('#product-sheet').scrollTop = 0;
@@ -127,6 +127,7 @@ function renderOordeel() {
 
   // Vlees en vis na de TGT-datum: geen verdere vragen of checks, het antwoord is gewoon nee.
   if (o?.type === 'ghost' && echteDatum(p, antw) === 'TGT' && !weg.size) {
+    huidig.vraagGetoond = false;
     $('#p-oordeel').innerHTML = `${oordeelHTML}
       <h3>Volgende keer</h3><p>${esc(p.tip)}</p>
       ${bronnen}`;
@@ -139,6 +140,7 @@ function renderOordeel() {
 
   $('#p-oordeel').innerHTML = `${oordeelHTML}
     <p class="rule">${esc(sit.houdbaar)}${sit.geenTermijn ? ' <b>Een vaste termijn na de datum geven de bronnen hier niet: kijk, ruik en proef.</b>' : ''}</p>
+    ${eetVraagHTML(o)}
 
     <p class="label">Merk je iets hiervan? <span class="muted">Dan altijd weg</span></p>
     <div class="chips">${p.weg.map((w, i) => `<button class="chip warn ${weg.has(i) ? 'on' : ''}" data-weg="${i}">${esc(w)}</button>`).join('')}</div>
@@ -150,6 +152,9 @@ function renderOordeel() {
     <p class="disclaimer">Een inschatting, geen garantie: jij beslist. Twijfel je? Niet doen. Zwanger, of eet je voor een baby, peuter of iemand met weinig weerstand? Houd je dan aan de datum.</p>
     ${bronnen}`;
 
+  const eetKnop = $('#eet-ja'), weggooiKnop = $('#eet-nee');
+  if (eetKnop) eetKnop.onclick = () => besluit('opgegeten');
+  if (weggooiKnop) weggooiKnop.onclick = () => besluit('weg');
   $('#p-oordeel').querySelectorAll('[data-recept]').forEach(b => b.onclick = () => openRecept(b.dataset.recept));
   $('#p-oordeel').querySelectorAll('[data-weg]').forEach(b => b.onclick = () => {
     const i = +b.dataset.weg;
@@ -160,3 +165,33 @@ function renderOordeel() {
 }
 
 $('#product-back').onclick = () => $('#product-sheet').close();
+
+// ---------- Is deze date doorgegaan? ----------
+// Alleen bij een match of twijfel: dan kan het nog opgegeten worden, en telt het mee voor de teller.
+function eetVraagHTML(o) {
+  const tonen = o && (o.type === 'match' || o.type === 'twijfel');
+  huidig.vraagGetoond = tonen;
+  if (!tonen) return '';
+  if (huidig.besluit === 'opgegeten') return `<div class="eat-box done">${icoon('match', 'eat-icon')}<p><b>Gered!</b> Telt mee: ± ${kg(gewichtVan(huidig.p, huidig.antw.open === 'open'))} kg minder weggegooid.</p></div>`;
+  if (huidig.besluit === 'weg') return `<div class="eat-box"><p>Weggegooid. Jammer, volgende keer beter!</p></div>`;
+  return `<div class="eat-box">
+    <p><b>Is deze date doorgegaan?</b> Laat het weten, dan telt het mee voor de teller.</p>
+    <div class="row"><button class="btn primary" id="eet-ja">Ik eet het op</button><button class="btn" id="eet-nee">Toch weggegooid</button></div>
+  </div>`;
+}
+
+async function besluit(status) {
+  huidig.besluit = status;
+  const check = await legVast(huidig.p, huidig.antw.open === 'open', status, huidig.checkId);
+  huidig.checkId = check.id;
+  if (status === 'opgegeten') toast(`Gered! ± ${kg(check.gram)} kg minder weggegooid`);
+  renderOordeel();
+}
+
+// Pagina dicht zonder te kiezen? Dan vraagt het beginscherm het later nog eens.
+$('#product-sheet').addEventListener('close', () => {
+  if (huidig?.vraagGetoond && !huidig.besluit) {
+    huidig.besluit = 'later'; // maar één keer onthouden, ook als 'close' vaker afgaat
+    onthoudOpenCheck(huidig.p, huidig.antw.open === 'open');
+  }
+});

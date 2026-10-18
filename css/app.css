@@ -471,3 +471,32 @@ dialog.welcome::backdrop { background: var(--bg); }
 }
 .saved-row { margin-top: 0; }
 .w-mascot { width: 150px; height: 150px; border-radius: 34px; box-shadow: var(--shadow); margin-bottom: 6px; }
+
+/* ---------- Gered-teller ---------- */
+.counter-card {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
+  padding: 18px; border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow);
+}
+.counter-icon { flex: none; width: 56px; height: 56px; }
+.counter-text { display: flex; flex-direction: column; }
+.counter-kicker { font-size: .78rem; font-weight: 700; color: var(--muted); }
+.counter-big { font-size: 2.1rem; line-height: 1.05; font-weight: 800; letter-spacing: -.02em; color: var(--green-dark); }
+.counter-sub { font-size: .9rem; font-weight: 600; }
+.counter-me { margin: 6px 0 0; font-size: .8rem; color: var(--muted); }
+
+/* "Is die date doorgegaan?" op het beginscherm */
+.followup { display: grid; grid-template-columns: auto 1fr; gap: 10px 12px; align-items: center; margin-bottom: 14px; padding: 14px; border-radius: var(--radius); background: var(--kleur); }
+.followup-icon { width: 48px; height: 48px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,.7); }
+.followup-text b { display: block; font-size: 1.05rem; }
+.followup-text span { font-size: .85rem; color: var(--muted); }
+.followup-buttons { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.followup-buttons .chip { background: rgba(255,255,255,.8); }
+.followup-buttons .chip.on { background: var(--green-dark); color: #fff; }
+
+/* Op de productpagina */
+.eat-box { margin-top: 14px; padding: 14px; border-radius: 18px; border: 2px dashed var(--green); }
+.eat-box p { margin: 0 0 10px; font-size: .9rem; }
+.eat-box .btn { min-height: 46px; }
+.eat-box.done { display: flex; align-items: center; gap: 12px; border-style: solid; background: var(--green-soft); }
+.eat-box.done p { margin: 0; }
+.eat-icon { flex: none; width: 40px; height: 40px; }

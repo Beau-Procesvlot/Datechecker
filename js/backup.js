@@ -4,7 +4,7 @@
 const BACKUP_ID = 'datechecker';
 
 $('#backup-save').onclick = async () => {
-  const data = { app: BACKUP_ID, version: 1, savedAt: new Date().toISOString(), items: state.items, profile: state.profile };
+  const data = { app: BACKUP_ID, version: 1, savedAt: new Date().toISOString(), items: state.items, profile: state.profile, gered: gered.checks };
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   const file = new File([blob], `${BACKUP_ID}-backup-${today()}.json`, { type: 'application/json' });
   // Op de iPhone opent dit het deelmenu (bewaren in Bestanden, AirDrop…).
@@ -40,6 +40,11 @@ $('#backup-file').onchange = async e => {
     if (data.app !== BACKUP_ID || !Array.isArray(data.items)) throw new Error();
     if (!confirm(`Back-up van ${new Date(data.savedAt).toLocaleDateString('nl-NL')} met ${data.items.length} items terugzetten? Wat er nu al in staat blijft bewaard.`)) return;
     for (const it of data.items) await saveItem(it);
+    // Je eigen gered-teller: checks die er nog niet zijn erbij zetten.
+    const bekend = new Set(gered.checks.map(c => c.id));
+    gered.checks.push(...(data.gered || []).filter(c => !bekend.has(c.id)));
+    await bewaarGered();
+    renderZoeken();
     toast(`${data.items.length} items teruggezet`);
     renderSettings();
   } catch {
