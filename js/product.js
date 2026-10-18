@@ -38,11 +38,15 @@ function datumTekst(tijd, dagen) {
   if (dagen < 0) return 'Die datum ligt in de toekomst.';
   const Tijdsduur = tijdsduur[0].toUpperCase() + tijdsduur.slice(1);
   if (tijd === 'open') return dagen === 0 ? 'Vandaag geopend.' : `${Tijdsduur} open.`;
+  if (tijd === 'gekookt') return dagen === 0 ? 'Vandaag gekookt.' : `${Tijdsduur} geleden gekookt.`;
   return dagen === 0 ? 'Vandaag ingevroren.' : `${Tijdsduur} in de vriezer.`;
 }
 
 // Het oordeel. Tekenen van bederf gaan altijd voor de datum.
-function oordeel(p, sit, dagen, weg) {
+// Bij producten waar het per merk verschilt, kiest de gebruiker welke datum erop staat.
+const echteDatum = (p, antw = {}) => p.datum === 'kies' ? (antw.soort === 'tgt' ? 'TGT' : 'THT') : p.datum;
+
+function oordeel(p, sit, dagen, weg, antw) {
   if (weg.size) return { type: 'ghost', titel: 'Ghosten.', tekst: `Deze date gaat niet door. ${p.wegUitleg}` };
   if (dagen == null) return null;
   const d = Math.max(0, dagen);
@@ -57,7 +61,8 @@ function oordeel(p, sit, dagen, weg) {
       ? 'Dit is al lang geleden. Vaak niet gevaarlijk, maar wel minder lekker. Check extra goed, of geef het een tweede leven.'
       : 'Het kan nog goed zijn. Loop de punten hieronder na voordat je het eet.' };
   }
-  return { type: 'ghost', titel: 'Ghosten.', tekst: p.datum === 'TGT'
+  if (sit.ghostTekst) return { type: 'ghost', titel: 'Ghosten.', tekst: `Deze date gaat niet door. ${sit.ghostTekst}` };
+  return { type: 'ghost', titel: 'Ghosten.', tekst: echteDatum(p, antw) === 'TGT'
     ? 'Deze date gaat niet door. Bij een TGT-datum eet je het na de datum niet meer, ook als het er goed uitziet: bacteriën zie of ruik je niet.'
     : `Deze date gaat niet door. Zo lang erna raden de bronnen het niet meer aan.` };
 }
@@ -80,7 +85,7 @@ function renderProduct() {
     ${cat && cat.kort !== naamDelen(p).titel ? `<span class="kicker">${cat.label}</span>` : ''}
     <h2 class="product-title">${esc(naamDelen(p).titel)}</h2>
     ${naamDelen(p).sub ? `<p class="product-sub-title">${esc(naamDelen(p).sub)}</p>` : ''}
-    <div class="date-type"><span class="sticker ${p.datum.toLowerCase()}">${p.datum}</span><p><b>${d.kort}.</b> ${d.uitleg}</p></div>
+    <div class="date-type">${sticker(p)}<p><b>${d.kort}.</b> ${d.uitleg}</p></div>
 
     ${vragenHTML}
 
@@ -111,7 +116,7 @@ function renderOordeel() {
   const { p, antw, datum, weg } = huidig;
   const sit = huidigeSituatie(p, antw);
   const dagen = datum ? dagenSinds(datum) : null;
-  const o = oordeel(p, sit, dagen, weg);
+  const o = oordeel(p, sit, dagen, weg, antw);
   $('#p-datum-tekst').textContent = dagen == null ? '' : datumTekst(sit.tijd, dagen);
 
   const oordeelHTML = o
@@ -121,7 +126,7 @@ function renderOordeel() {
   const bronnen = `<p class="source">Bron: ${p.bron.map(b => `<a href="${b.url}" target="_blank" rel="noopener">${esc(b.naam)}</a>`).join(' · ')}</p>`;
 
   // Vlees en vis na de TGT-datum: geen verdere vragen of checks, het antwoord is gewoon nee.
-  if (o?.type === 'ghost' && p.datum === 'TGT' && !weg.size) {
+  if (o?.type === 'ghost' && echteDatum(p, antw) === 'TGT' && !weg.size) {
     $('#p-oordeel').innerHTML = `${oordeelHTML}
       <h3>Volgende keer</h3><p>${esc(p.tip)}</p>
       ${bronnen}`;
@@ -133,7 +138,7 @@ function renderOordeel() {
     : '';
 
   $('#p-oordeel').innerHTML = `${oordeelHTML}
-    <p class="rule">${esc(sit.houdbaar)}</p>
+    <p class="rule">${esc(sit.houdbaar)}${sit.geenTermijn ? ' <b>Een vaste termijn na de datum geven de bronnen hier niet: kijk, ruik en proef.</b>' : ''}</p>
 
     <p class="label">Merk je iets hiervan? <span class="muted">Dan altijd weg</span></p>
     <div class="chips">${p.weg.map((w, i) => `<button class="chip warn ${weg.has(i) ? 'on' : ''}" data-weg="${i}">${esc(w)}</button>`).join('')}</div>

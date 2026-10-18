@@ -43,7 +43,7 @@ function productKaart(p) {
   const { titel, sub } = naamDelen(p);
   return `<button class="product-card" data-product="${p.id}" style="--kleur:${p.kleur}">
     ${icoon(p.id, 'card-icon')}
-    <span class="sticker ${p.datum.toLowerCase()}">${p.datum}</span>
+    ${sticker(p)}
     <span class="product-name">${esc(titel)}</span>
     ${sub ? `<span class="product-sub">${esc(sub)}</span>` : ''}
   </button>`;
@@ -76,7 +76,8 @@ function renderZoeken() {
       ? `<div class="section-head"><h2>Onlangs opgezocht</h2></div>
          <div class="recent-row">${recentLijst.map(p => `<button class="recent-card" data-product="${p.id}" style="--kleur:${p.kleur}">${icoon(p.id)}<span>${esc(naamDelen(p).titel)}</span></button>`).join('')}</div>`
       : '';
-    const lijst = PRODUCTEN.filter(p => !filterCat || p.categorie === filterCat);
+    const volgorde = id => CATEGORIEEN.findIndex(c => c.id === id);
+    const lijst = PRODUCTEN.filter(p => !filterCat || p.categorie === filterCat).sort((a, b) => volgorde(a.categorie) - volgorde(b.categorie));
     const titel = filterCat ? CATEGORIEEN.find(c => c.id === filterCat).label : 'Alle producten';
     const grid = `<div class="section-head"><h2>${titel}</h2>${filterCat ? '<button class="pill-link" id="clear-cat">Alles tonen</button>' : ''}</div>
       ${raster(lijst)}`;

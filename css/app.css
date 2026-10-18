@@ -132,6 +132,8 @@ main { padding: 0 20px; }
 }
 .sticker.tht { background: var(--mustard); color: #3a2a08; }
 .sticker.tgt { background: var(--tomato); }
+.sticker.kies { background: linear-gradient(90deg, var(--mustard) 50%, var(--tomato) 50%); color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,.25); }
+.sticker.zelf { background: var(--green-dark); }
 
 /* ---------- Zoeken ---------- */
 .search-wrap {
@@ -169,7 +171,9 @@ input[type=search]::-webkit-search-decoration { -webkit-appearance: none; }
 .info-stickers .sticker.tgt { transform: rotate(6deg); }
 
 /* Categorie-tegels */
-.cat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.cat-row { display: flex; gap: 10px; overflow-x: auto; margin: 0 -20px; padding: 0 20px 4px; scrollbar-width: none; }
+.cat-row::-webkit-scrollbar { display: none; }
+.cat-row .cat-tile { flex: none; width: 78px; }
 .cat-tile {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   border: 0; background: none; padding: 0; cursor: pointer; font-size: .8rem; font-weight: 600; color: var(--muted);
