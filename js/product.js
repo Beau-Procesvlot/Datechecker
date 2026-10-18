@@ -9,7 +9,7 @@ function openProduct(id) {
   const antw = Object.fromEntries(p.vragen.map(v => [v.id, v.opties[0].id]));
   huidig = { p, antw, datum: '', weg: new Set() };
   renderProduct();
-  $('#product-sheet').showModal();
+  if (!$('#product-sheet').open) $('#product-sheet').showModal();
   $('#product-sheet').scrollTop = 0;
   onthoudRecent(id).then(() => { if (!$('#search').value.trim()) renderZoeken(); });
 }
@@ -134,7 +134,7 @@ function renderOordeel() {
   }
 
   const tweedeLeven = p.tweedeLeven.length
-    ? `<details class="fold"><summary>Niet je type meer?</summary><p class="muted small">Niet meer lekker, wel nog goed? Geef het een tweede kans:</p><ul class="ideas">${p.tweedeLeven.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>`
+    ? `<details class="fold"><summary>Niet je type meer?</summary><p class="muted small">Niet meer lekker, wel nog goed? Geef het een tweede kans:</p><ul class="ideas">${p.tweedeLeven.map(t => `<li>${esc(t)}</li>`).join('')}</ul>${receptKnoppen(p.id)}</details>`
     : '';
 
   $('#p-oordeel').innerHTML = `${oordeelHTML}
@@ -150,6 +150,7 @@ function renderOordeel() {
     <p class="disclaimer">Een inschatting, geen garantie: jij beslist. Twijfel je? Niet doen. Zwanger, of eet je voor een baby, peuter of iemand met weinig weerstand? Houd je dan aan de datum.</p>
     ${bronnen}`;
 
+  $('#p-oordeel').querySelectorAll('[data-recept]').forEach(b => b.onclick = () => openRecept(b.dataset.recept));
   $('#p-oordeel').querySelectorAll('[data-weg]').forEach(b => b.onclick = () => {
     const i = +b.dataset.weg;
     if (huidig.weg.has(i)) huidig.weg.delete(i); else huidig.weg.add(i);

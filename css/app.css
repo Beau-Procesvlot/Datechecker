@@ -423,3 +423,50 @@ dialog.welcome::backdrop { background: var(--bg); }
 .tip-card h3 { font-size: 1.12rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 4px; }
 .tip-card p { margin: 0; font-size: .93rem; }
 .tip-source { display: inline-block; margin-top: 8px; font-size: .74rem; color: var(--muted); }
+
+/* ---------- Tweede leven ---------- */
+.tl-note { display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: var(--radius); background: var(--green-soft); }
+.tl-note-icon { flex: none; width: 40px; height: 40px; }
+.tl-note p { margin: 0; font-size: .88rem; }
+
+.recipe-row { display: flex; gap: 12px; overflow-x: auto; margin: 0 -20px; padding: 2px 20px 8px; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-padding: 0 20px; }
+.recipe-row::-webkit-scrollbar { display: none; }
+.recipe-card {
+  position: relative; flex: none; width: 150px; min-height: 190px; scroll-snap-align: start;
+  display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+  padding: 14px; border: 0; border-radius: var(--radius); background: var(--kleur); cursor: pointer;
+}
+.recipe-icon { width: 70px; height: 70px; margin: 2px 0 auto -4px; }
+.recipe-time { position: absolute; top: 14px; right: 12px; padding: 3px 8px; border-radius: 8px; background: rgba(255,255,255,.75); font-size: .72rem; font-weight: 700; }
+.recipe-title { font-size: 1.05rem; font-weight: 800; line-height: 1.15; margin-top: 10px; }
+.recipe-saves { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+.recipe-card:active { transform: scale(.97); }
+
+.idea-list { display: grid; gap: 12px; }
+.idea-card { padding: 12px; border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); }
+.idea-head {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 0; border: 0; background: none;
+  text-align: left; cursor: pointer;
+}
+.idea-icon { flex: none; width: 52px; height: 52px; padding: 5px; border-radius: 16px; background: var(--kleur); }
+.idea-head b { display: block; font-size: 1.05rem; }
+.idea-head small { color: var(--muted); font-size: .78rem; }
+.idea-card .ideas { margin: 10px 4px 0; }
+.recipe-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.recipe-link { background: var(--green-soft); color: var(--green-dark); }
+.fold .recipe-links { margin: 0 16px 16px; }
+
+/* Receptscherm */
+.recipe-hero { height: 150px; margin: 0 0 14px; border-radius: var(--radius); background: var(--kleur); display: flex; align-items: center; justify-content: center; }
+.recipe-hero-icon { width: 120px; height: 120px; }
+.recipe .sheet-title { margin: 2px 0 8px; }
+.recipe > p { margin: 0; }
+.recipe h3 { margin: 22px 0 8px; font-size: 1rem; }
+.steps { margin: 0; padding-left: 0; list-style: none; counter-reset: stap; display: grid; gap: 10px; }
+.steps li { counter-increment: stap; display: flex; gap: 12px; align-items: flex-start; font-size: .93rem; }
+.steps li::before {
+  content: counter(stap); flex: none; width: 26px; height: 26px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--green-dark); color: #fff; font-weight: 800; font-size: .8rem;
+}
+.saved-row { margin-top: 0; }

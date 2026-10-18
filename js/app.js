@@ -111,6 +111,7 @@ function showTab(name) {
   $('#page-title').innerHTML = TAB_TITLES[name];
   window.scrollTo(0, 0);
   if (name === 'tips') renderTips();
+  if (name === 'tweede-leven') renderTweedeLeven();
   if (name === 'instellingen') renderSettings();
 }
 document.querySelectorAll('.tabbar button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
