@@ -60,6 +60,9 @@ const RECEPTEN = [
   },
 ];
 
+// Recepten verwijzen soms nog naar een oude product-id: omzetten naar de samengevoegde groep, zonder dubbele.
+for (const r of RECEPTEN) r.redt = [...new Set(r.redt.map(id => ALIAS[id] || id))];
+
 let tlFilter = null;
 
 function receptKaart(r) {

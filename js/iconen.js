@@ -307,6 +307,44 @@ Object.assign(ICONEN, {
     <path d="M24 16c-2-3 2-5 0-8M32 16c-2-3 2-5 0-8" stroke="#c9b8a0" stroke-width="2.5" stroke-linecap="round" fill="none"/>`,
   frisdrank: VORM.blik('#e4434a', '<path d="M22 30c6 4 14-4 20 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><g fill="#fff" opacity=".6"><circle cx="26" cy="40" r="1.5"/><circle cx="34" cy="43" r="1.2"/><circle cx="39" cy="38" r="1.4"/></g>'),
 
+  // ---------- Extra veelgezochte producten ----------
+  'gekookte-eieren': `${SCHADUW}
+    <ellipse cx="22" cy="38" rx="13" ry="16" fill="#f6ead6"/>
+    <path d="M36 40a14 12 0 0 1 22 0c0 9-5 15-11 15s-11-6-11-15z" fill="#fff" stroke="#e9e1d2" stroke-width="1.5"/>
+    <circle cx="47" cy="42" r="6.5" fill="#f2b632"/>
+    <ellipse cx="18" cy="31" rx="3" ry="5" fill="#fff" opacity=".8"/>`,
+  citrus: `${SCHADUW}
+    <circle cx="26" cy="36" r="18" fill="#f7a440"/>
+    <g fill="#e98a2a"><circle cx="20" cy="30" r="1.2"/><circle cx="30" cy="28" r="1.2"/><circle cx="24" cy="42" r="1.2"/><circle cx="33" cy="38" r="1.2"/></g>
+    <path d="M26 18c2-4 6-6 10-5-2 4-6 6-10 5z" fill="#7cb87e"/>
+    <circle cx="46" cy="42" r="12" fill="#f7d34a"/><circle cx="46" cy="42" r="9" fill="#fbe7a1"/>
+    <path d="M46 33v18M37 42h18M40 36l12 12M52 36L40 48" stroke="#f7d34a" stroke-width="1.6"/>`,
+  druiven: `${SCHADUW}
+    <g fill="#9b6bc4"><circle cx="24" cy="24" r="7"/><circle cx="38" cy="24" r="7"/><circle cx="31" cy="34" r="7"/><circle cx="18" cy="35" r="6.5"/><circle cx="44" cy="35" r="6.5"/><circle cx="25" cy="45" r="6.5"/><circle cx="38" cy="45" r="6.5"/><circle cx="31" cy="54" r="6"/></g>
+    <g fill="#c7a2e3"><circle cx="22" cy="22" r="2"/><circle cx="36" cy="22" r="2"/><circle cx="29" cy="32" r="2"/></g>
+    <path d="M31 17c0-5 2-8 6-10" stroke="#7a4a2a" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M36 12c6-4 12-2 14 2-6 3-11 2-14-2z" fill="#7cb87e"/>`,
+  sushi: `${SCHADUW}
+    <g transform="translate(-2 0)">
+      <circle cx="22" cy="36" r="13" fill="#2f3b33"/><circle cx="22" cy="36" r="10" fill="#fff"/><circle cx="22" cy="36" r="5" fill="#f59a6e"/>
+    </g>
+    <rect x="34" y="34" width="24" height="14" rx="7" fill="#fff"/>
+    <path d="M34 34c4-8 20-8 24 0z" fill="#f59a6e"/><path d="M40 30l4 4M46 29l4 4M52 30l3 3" stroke="#fde2d2" stroke-width="1.8" stroke-linecap="round"/>
+    <rect x="44" y="34" width="5" height="14" fill="#2f3b33"/>`,
+  gebak: `${SCHADUW}
+    <path d="M8 40L48 22l8 18z" fill="#fbe3ea"/>
+    <path d="M8 40h48v12a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="#e9b45f"/>
+    <path d="M8 44h48" stroke="#fff" stroke-width="3"/>
+    <path d="M44 22c0-6 6-8 8-4 2-4 8-2 6 4-2 4-12 4-14 0z" fill="#fff"/>
+    <circle cx="50" cy="14" r="4.5" fill="#e4434a"/>`,
+  wijn: `${SCHADUW}
+    <path d="M16 8h10v10c4 3 6 7 6 12v22a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V30c0-5 2-9 6-12z" fill="#7a2a3a"/>
+    <rect x="14" y="34" width="14" height="10" rx="2" fill="#f6ead6"/>
+    <rect x="15" y="4" width="12" height="6" rx="2" fill="#d9503f"/>
+    <path d="M38 22h18c0 10-4 16-9 16s-9-6-9-16z" fill="#fff" stroke="#d9c3a5" stroke-width="2"/>
+    <path d="M39.5 28h15c-1 6-4 9-7.5 9s-6.5-3-7.5-9z" fill="#b8324a"/>
+    <path d="M47 38v14M41 54h12" stroke="#d9c3a5" stroke-width="3" stroke-linecap="round"/>`,
+
   // ---------- Nieuwe categorieën ----------
   'cat-vers': `
     <path d="M32 20c-6-5-20-4-22 10-2 13 8 26 16 26 3 0 4-1 6-1s3 1 6 1c8 0 18-13 16-26-2-14-16-15-22-10z" fill="#e4574a"/>

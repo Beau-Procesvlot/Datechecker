@@ -21,6 +21,7 @@ const GEWICHT = {
   banaan: 600, appel: 750, aardbeien: 400, avocado: 200, tomaat: 500, komkommer: 400, paprika: 500,
   aardappelen: 1000, ui: 500, wortels: 500, champignons: 250, broccoli: 500,
   ijs: 500, pizza: 350, 'diepvries-groente': 450, bloem: 1000, olie: 500, koffie: 500, frisdrank: 1500,
+  'gekookte-eieren': 120, citrus: 750, druiven: 500, sushi: 250, gebak: 300, wijn: 750,
 };
 const gewichtVan = (p, open) => Math.round((GEWICHT[p.id] || 300) * (open ? 0.5 : 1));
 
