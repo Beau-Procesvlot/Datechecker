@@ -2,6 +2,7 @@
 //
 // GET  /totaal  → { producten, gram }
 // POST /gered   → { gram, apparaat }  telt één opgegeten product mee en geeft het nieuwe totaal terug.
+// POST /plus    → Datechecker Plus: betaling controleren bij Stripe en een ontgrendelcode geven.
 // POST /idee    → het feedbackformulier van zonde.app; gecontroleerd en beperkt doorgestuurd naar Make.
 //
 // Anoniem: er wordt alleen een gewicht en een willekeurig apparaatnummer (dat de app zelf verzint) ontvangen.
@@ -107,6 +108,53 @@ export default {
       });
       if (!r.ok) return json({ fout: 'doorsturen mislukt' }, 502);
       return json({ ok: true });
+    }
+
+    // Datechecker Plus: controleert bij Stripe of er echt betaald is en geeft een ontgrendelcode terug.
+    // { sessie } = net betaald (Stripe stuurt de koper terug met ?plus=<sessie-id>)
+    // { code }   = Plus terugzetten op een nieuwe telefoon
+    // Er wordt alleen de sessie-id en de code bewaard; wie er betaald heeft, weet alleen Stripe.
+    // Geheimen van de worker: STRIPE_KEY (alleen-lezen sleutel) en PLUS_LINK (id van de Payment Link, plink_...).
+    if (req.method === 'POST' && pad === '/plus') {
+      if (!TOEGESTAAN.includes(origin)) return json({ fout: 'niet toegestaan' }, 403);
+      if (!env.STRIPE_KEY) return json({ fout: 'niet ingesteld' }, 503);
+      let d;
+      try { d = await req.json(); } catch { return json({ fout: 'geen geldige gegevens' }, 400); }
+
+      // Hooguit 20 pogingen per afzender per dag (tegen raden van codes). IP alleen als dagelijkse hash.
+      const dag = new Date().toISOString().slice(0, 10);
+      const ip = req.headers.get('CF-Connecting-IP') || 'onbekend';
+      const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(dag + ip + env.STRIPE_KEY)))]
+        .slice(0, 12).map(b => b.toString(16).padStart(2, '0')).join('');
+      const pogingen = await env.DB.prepare(
+        'INSERT INTO limiet (dag, apparaat, aantal) VALUES (?1, ?2, 1) ON CONFLICT (dag, apparaat) DO UPDATE SET aantal = aantal + 1 RETURNING aantal'
+      ).bind(dag, 'plus-' + hash).first();
+      if (pogingen.aantal > 20) return json({ fout: 'te veel pogingen vandaag' }, 429);
+
+      // Plus terugzetten met een bestaande code
+      if (d.code) {
+        const code = String(d.code).toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (!/^[A-Z0-9]{8}$/.test(code)) return json({ fout: 'code klopt niet' }, 400);
+        const r = await env.DB.prepare('SELECT code FROM plus WHERE code = ?1').bind(code).first();
+        return r ? json({ ok: true, code }) : json({ fout: 'code onbekend' }, 404);
+      }
+
+      // Net betaald: sessie controleren bij Stripe
+      const sessie = String(d.sessie || '');
+      if (!/^cs_(test|live)_[A-Za-z0-9]{10,200}$/.test(sessie)) return json({ fout: 'onbekende betaling' }, 400);
+      const al = await env.DB.prepare('SELECT code FROM plus WHERE sessie = ?1').bind(sessie).first();
+      if (al) return json({ ok: true, code: al.code });
+      const res = await fetch(`https://api.stripe.com/v1/checkout/sessions/${sessie}`, { headers: { Authorization: `Bearer ${env.STRIPE_KEY}` } });
+      if (!res.ok) return json({ fout: 'betaling niet gevonden' }, 404);
+      const s = await res.json();
+      if (s.payment_status !== 'paid') return json({ fout: 'nog niet betaald' }, 402);
+      if (env.PLUS_LINK && s.payment_link !== env.PLUS_LINK) return json({ fout: 'andere betaling' }, 400);
+
+      // Leesbare code zonder verwarrende tekens (geen 0/O, 1/I)
+      const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const code = [...crypto.getRandomValues(new Uint8Array(8))].map(b => letters[b % letters.length]).join('');
+      await env.DB.prepare('INSERT INTO plus (code, sessie, gemaakt) VALUES (?1, ?2, ?3)').bind(code, sessie, new Date().toISOString()).run();
+      return json({ ok: true, code });
     }
 
     return json({ fout: 'niet gevonden' }, 404);

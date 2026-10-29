@@ -11,3 +11,6 @@ ontwerp/
 # Cloudflare-hulpbestanden van de teller
 teller/.wrangler/
 teller/node_modules/
+
+# Lokale test-geheimen van de teller (nooit online)
+teller/.dev.vars

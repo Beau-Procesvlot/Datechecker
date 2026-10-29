@@ -4,7 +4,7 @@
 const BACKUP_ID = 'datechecker';
 
 $('#backup-save').onclick = async () => {
-  const data = { app: BACKUP_ID, version: 1, savedAt: new Date().toISOString(), items: state.items, profile: state.profile, gered: gered.checks };
+  const data = { app: BACKUP_ID, version: 1, savedAt: new Date().toISOString(), items: state.items, profile: state.profile, gered: gered.checks, plus: { code: plus.code, producten: plus.producten, recepten: plus.recepten } };
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   const file = new File([blob], `${BACKUP_ID}-backup-${today()}.json`, { type: 'application/json' });
   // Op de iPhone opent dit het deelmenu (bewaren in Bestanden, AirDrop…).
@@ -44,6 +44,15 @@ $('#backup-file').onchange = async e => {
     const bekend = new Set(gered.checks.map(c => c.id));
     gered.checks.push(...(data.gered || []).filter(c => !bekend.has(c.id)));
     await bewaarGered();
+    // Plus en je eigen producten en recepten (bestaande blijven staan).
+    if (data.plus) {
+      plus.code = plus.code || data.plus.code || null;
+      const ids = new Set([...plus.producten, ...plus.recepten].map(x => x.id));
+      plus.producten.push(...(data.plus.producten || []).filter(x => !ids.has(x.id)));
+      plus.recepten.push(...(data.plus.recepten || []).filter(x => !ids.has(x.id)));
+      await bewaarPlus();
+      zetEigenInApp();
+    }
     renderZoeken();
     toast(`${data.items.length} items teruggezet`);
     renderSettings();

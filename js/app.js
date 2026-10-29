@@ -117,6 +117,7 @@ function showTab(name) {
 document.querySelectorAll('.tabbar button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
 
 function renderSettings() {
+  renderPlusInstellingen();
   renderBackupInfo();
 }
 

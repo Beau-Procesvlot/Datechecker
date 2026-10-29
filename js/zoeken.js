@@ -44,6 +44,7 @@ function productKaart(p) {
   return `<button class="product-card" data-product="${p.id}" style="--kleur:${p.kleur}">
     ${icoon(p.id, 'card-icon')}
     ${sticker(p)}
+    ${p.eigen ? '<span class="eigen-badge">Eigen</span>' : ''}
     <span class="product-name">${esc(titel)}</span>
     ${sub ? `<span class="product-sub">${esc(sub)}</span>` : ''}
   </button>`;
@@ -62,7 +63,7 @@ function renderZoeken() {
     const hits = PRODUCTEN.map(p => ({ p, s: zoekScore(p, term) })).filter(h => h.s).sort((a, b) => b.s - a.s || a.p.naam.localeCompare(b.p.naam));
     el.innerHTML = hits.length
       ? raster(hits.map(h => h.p))
-      : `<div class="empty">${icoon('ghost', 'empty-icon')}<h2>Geen match.</h2><p class="muted">"${esc(term)}" staat er nog niet in. De lijst groeit; probeer een algemener woord, zoals "kaas" of "brood".</p></div>`;
+      : `<div class="empty">${icoon('ghost', 'empty-icon')}<h2>Geen match.</h2><p class="muted">"${esc(term)}" staat er nog niet in. De lijst groeit; probeer een algemener woord, zoals "kaas" of "brood".</p></div>${plusProductKnop()}`;
   } else {
     const banner = `<button class="info-banner" id="open-info">
       <span class="info-text"><b>THT of TGT?</b><span>Het verschil bepaalt of je date doorgaat.</span><span class="info-link">Lees hoe het zit</span></span>
@@ -81,7 +82,7 @@ function renderZoeken() {
     const titel = filterCat ? CATEGORIEEN.find(c => c.id === filterCat).label : 'Alle producten';
     const grid = `<div class="section-head"><h2>${titel}</h2>${filterCat ? '<button class="pill-link" id="clear-cat">Alles tonen</button>' : ''}</div>
       ${raster(lijst)}`;
-    el.innerHTML = vraagHTML() + tellerHTML() + banner + tegels + recentHTML + grid;
+    el.innerHTML = vraagHTML() + tellerHTML() + banner + tegels + recentHTML + plusProductKnop() + grid;
     koppelVraag(el);
     $('#open-info').onclick = () => $('#info-sheet').showModal();
     el.querySelectorAll('[data-cat]').forEach(b => b.onclick = () => { filterCat = filterCat === b.dataset.cat ? null : b.dataset.cat; renderZoeken(); });
@@ -89,6 +90,8 @@ function renderZoeken() {
     if (clear) clear.onclick = () => { filterCat = null; renderZoeken(); };
   }
   el.querySelectorAll('[data-product]').forEach(b => b.onclick = () => openProduct(b.dataset.product));
+  const eigenKnop = $('#eigen-product-knop');
+  if (eigenKnop) eigenKnop.onclick = () => openEigenProduct();
 }
 
 async function onthoudRecent(id) {

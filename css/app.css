@@ -501,3 +501,67 @@ dialog.welcome::backdrop { background: var(--bg); }
 .eat-box.done { display: flex; align-items: center; gap: 12px; border-style: solid; background: var(--green-soft); }
 .eat-box.done p { margin: 0; }
 .eat-icon { flex: none; width: 40px; height: 40px; }
+
+/* ---------- Datechecker Plus en steunen ---------- */
+.plus-badge {
+  display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 8px;
+  background: var(--ink); color: #fff; font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+}
+.add-product {
+  display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 20px; padding: 14px 16px;
+  border: 2px dashed var(--line); border-radius: var(--radius); background: var(--card); cursor: pointer; text-align: left;
+}
+.add-product > span:nth-child(2) { flex: 1; }
+.add-product b { display: block; font-size: 1rem; }
+.add-product small { color: var(--muted); font-size: .8rem; }
+.add-plus {
+  flex: none; width: 40px; height: 40px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+  background: var(--green-soft); color: var(--green-dark); font-size: 1.6rem; font-weight: 700;
+}
+.recipe-card.add-card { background: var(--card); border: 2px dashed var(--line); }
+.recipe-card.add-card .add-plus { margin: 4px 0 auto; }
+.recipe-card.add-card .plus-badge { position: absolute; top: 14px; right: 12px; }
+.eigen-badge {
+  position: absolute; top: 44px; right: 12px; padding: 2px 8px; border-radius: 8px;
+  background: rgba(255,255,255,.8); font-size: .68rem; font-weight: 800; color: var(--green-dark);
+}
+.eigen-banner { margin-top: 12px; padding: 12px 14px; border-radius: 16px; background: var(--green-soft); font-size: .88rem; }
+.eigen-banner p { margin: 0 0 8px; }
+.eigen-notitie { font-style: italic; }
+.eigen-acties { margin-top: 18px; }
+.btn.small.danger { border: 0; background: var(--tomato-soft); }
+
+.plus-hero { height: 120px; margin-bottom: 12px; border-radius: var(--radius); background: var(--green-soft); display: flex; align-items: center; justify-content: center; }
+.plus-hero-icon { width: 96px; height: 96px; }
+.plus-lijst { margin: 6px 0 18px; padding-left: 20px; display: grid; gap: 8px; font-size: .93rem; }
+.plus-lijst li::marker { color: var(--green); }
+.plus a.btn { text-align: center; text-decoration: none; }
+.plus-legal { margin: 8px 2px 0; }
+.plus-legal a { color: inherit; }
+.plus-code { display: flex; justify-content: space-between; align-items: center; margin: 14px 0 6px; padding: 14px 16px; border-radius: 16px; background: var(--soft); }
+.plus-code b { font-size: 1.35rem; letter-spacing: .14em; font-family: var(--sans); }
+.plus-code-form { display: flex; gap: 8px; margin: 0 16px 16px; }
+.plus-code-form input { flex: 1; min-width: 0; }
+.plus > p { margin: 0 0 10px; }
+
+/* Formulieren voor eigen product en recept */
+.eigen input[type=text], .eigen textarea, .eigen .select, .plus-code-form input {
+  width: 100%; min-height: 48px; padding: 10px 14px; border: 2px solid var(--line); border-radius: 14px;
+  background: var(--card); color: var(--ink); font: inherit; font-size: 16px;
+}
+.eigen textarea { resize: vertical; min-height: 90px; }
+.eigen input:focus, .eigen textarea:focus, .eigen .select:focus { border-color: var(--green); outline: 0; }
+.eigen .btn.primary { margin-top: 22px; }
+.eigen .muted.small { margin: 6px 2px 0; }
+.eigen .chips { gap: 6px; }
+
+.steun-link { display: block; margin-top: 10px; text-align: center; font-size: .85rem; color: var(--muted); }
+a.settings-row { color: inherit; text-decoration: none; }
+
+/* Losse pagina (voorwaarden) */
+body.los-document { padding-bottom: 40px; }
+.voorwaarden { padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px 20px; }
+.voorwaarden .sheet-title { margin: 18px 0 2px; }
+.voorwaarden h2 { margin: 22px 0 6px; font-size: 1.05rem; }
+.voorwaarden p { margin: 0 0 10px; font-size: .95rem; }
+.voorwaarden .pill-link { text-decoration: none; display: inline-block; }

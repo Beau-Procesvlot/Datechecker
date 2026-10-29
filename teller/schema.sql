@@ -13,3 +13,10 @@ CREATE TABLE IF NOT EXISTS limiet (
   aantal INTEGER NOT NULL,
   PRIMARY KEY (dag, apparaat)
 );
+
+-- Datechecker Plus: ontgrendelcodes. Alleen de Stripe-sessie-id en de code, niets over de koper.
+CREATE TABLE IF NOT EXISTS plus (
+  code TEXT PRIMARY KEY,
+  sessie TEXT UNIQUE NOT NULL,
+  gemaakt TEXT NOT NULL
+);

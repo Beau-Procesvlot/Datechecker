@@ -87,6 +87,7 @@ function renderProduct() {
     <h2 class="product-title">${esc(naamDelen(p).titel)}</h2>
     ${naamDelen(p).sub ? `<p class="product-sub-title">${esc(naamDelen(p).sub)}</p>` : ''}
     <div class="date-type">${sticker(p)}<p><b>${d.kort}.</b> ${d.uitleg}</p></div>
+    ${eigenProductBanner(p)}
 
     ${vragenHTML}
 
@@ -99,6 +100,7 @@ function renderProduct() {
 
     <div id="p-oordeel"></div>`;
 
+  koppelEigenProduct(p);
   const body = $('#product-body');
   body.querySelectorAll('[data-vraag]').forEach(b => b.onclick = () => {
     huidig.antw[b.dataset.vraag] = b.dataset.optie;
@@ -173,7 +175,7 @@ function eetVraagHTML(o) {
   const tonen = o && (o.type === 'match' || o.type === 'twijfel');
   huidig.vraagGetoond = tonen;
   if (!tonen) return '';
-  if (huidig.besluit === 'opgegeten') return `<div class="eat-box done">${icoon('match', 'eat-icon')}<p><b>Gered!</b> Telt mee: ± ${kg(gewichtVan(huidig.p, huidig.antw.open === 'open'))} kg minder weggegooid.</p></div>`;
+  if (huidig.besluit === 'opgegeten') return `<div class="eat-box done">${icoon('match', 'eat-icon')}<p><b>Gered!</b> Telt mee: ± ${kg(gewichtVan(huidig.p, huidig.antw.open === 'open'))} kg minder weggegooid.</p></div>${steunHTML(true)}`;
   if (huidig.besluit === 'weg') return `<div class="eat-box"><p>Weggegooid. Jammer, volgende keer beter!</p></div>`;
   return `<div class="eat-box">
     <p><b>Is deze date doorgegaan?</b> Laat het weten, dan telt het mee voor de teller.</p>

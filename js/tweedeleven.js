@@ -68,7 +68,7 @@ let tlFilter = null;
 function receptKaart(r) {
   return `<button class="recipe-card" data-recept="${r.id}" style="--kleur:${r.kleur}">
     ${icoon(r.icoon, 'recipe-icon')}
-    <span class="recipe-time">${r.tijd}</span>
+    <span class="recipe-time">${r.tijd || 'Eigen'}</span>
     <span class="recipe-title">${esc(r.titel)}</span>
     <span class="recipe-saves">Redt ${r.redt.length} producten</span>
   </button>`;
@@ -84,7 +84,7 @@ function renderTweedeLeven() {
     <div class="tl-note">${icoon('match', 'tl-note-icon')}<p><b>Alleen voor eten dat nog goed is.</b> Niet meer op z’n best, wel nog te eten? Check het eerst bij Zoeken. Wat “Ghosten” krijgt, krijgt geen tweede kans. Vlees, vis en vleeswaren nooit: smaakt het niet meer goed, dan gaat het weg.</p></div>
 
     <div class="section-head"><h2>Recepten</h2></div>
-    <div class="recipe-row">${RECEPTEN.map(receptKaart).join('')}</div>
+    <div class="recipe-row">${plusReceptKaart()}${RECEPTEN.map(receptKaart).join('')}</div>
 
     <div class="section-head"><h2>Per product</h2></div>
     <div class="chips scroll-x tip-filter">
@@ -103,6 +103,7 @@ function renderTweedeLeven() {
 
   const body = $('#tl-body');
   body.querySelectorAll('[data-recept]').forEach(b => b.onclick = () => openRecept(b.dataset.recept));
+  $('#eigen-recept-knop').onclick = () => openEigenRecept();
   body.querySelectorAll('[data-product]').forEach(b => b.onclick = () => openProduct(b.dataset.product));
   body.querySelectorAll('[data-tlcat]').forEach(b => b.onclick = () => { tlFilter = b.dataset.tlcat || null; renderTweedeLeven(); });
 }
@@ -120,15 +121,17 @@ function openRecept(id) {
   const gered = r.redt.map(productById).filter(Boolean);
   $('#recept-body').innerHTML = `
     <div class="recipe-hero" style="--kleur:${r.kleur}">${icoon(r.icoon, 'recipe-hero-icon')}</div>
-    <span class="kicker">Tweede leven · ${r.tijd}</span>
+    <span class="kicker">${r.eigen ? 'Jouw eigen recept' : `Tweede leven · ${r.tijd}`}</span>
     <h2 class="sheet-title">${esc(r.titel)}</h2>
-    <p>${esc(r.intro)}</p>
+    ${r.eigen ? '' : `<p>${esc(r.intro)}</p>`}
     <h3>Je hebt nodig</h3>
     <ul class="ideas">${r.ingredienten.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
     <h3>Zo maak je het</h3>
     <ol class="steps">${r.stappen.map(s => `<li>${esc(s)}</li>`).join('')}</ol>
     <h3>Dit recept redt</h3>
     <div class="recent-row saved-row">${gered.map(p => `<button class="recent-card" data-product="${p.id}" style="--kleur:${p.kleur}">${icoon(p.id)}<span>${esc(naamDelen(p).titel)}</span></button>`).join('')}</div>`;
+  $('#recept-body').insertAdjacentHTML('beforeend', eigenReceptKnoppen(r));
+  koppelEigenRecept(r);
   $('#recept-body').querySelectorAll('[data-product]').forEach(b => b.onclick = () => { $('#recept-sheet').close(); openProduct(b.dataset.product); });
   $('#recept-sheet').showModal();
   $('#recept-body').scrollTop = 0;
