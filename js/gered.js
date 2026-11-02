@@ -6,7 +6,8 @@
 // - Naar de online teller gaat alleen het gewicht en een willekeurig apparaatnummer, verder niets.
 
 // Adres van de online teller (Cloudflare Worker). Leeg = nog niet online: dan alleen je eigen teller.
-const TELLER_URL = 'https://datechecker-teller.beau-f5b.workers.dev';
+// Op je eigen computer (localhost) nooit naar de echte teller: dan tellen testjes niet mee.
+const TELLER_URL = location.hostname === 'localhost' ? '' : 'https://datechecker-teller.beau-f5b.workers.dev';
 
 // Geschat gewicht van een gemiddelde verpakking in grammen. Nieuw product? Zet het hier ook bij.
 const GEWICHT = {

@@ -9,6 +9,9 @@
 // De basis blijft altijd gratis: opzoeken of je eten nog goed is, kost nooit geld.
 
 // Stripe Payment Links. Leeg = nog niet ingesteld: dan staat er "binnenkort".
+// Schakelaar: false = Plus en de steunknop zijn verborgen (nog niet gelanceerd). Zet op true zodra Stripe en de voorwaarden klaar zijn.
+const PLUS_AAN = false;
+
 const STEUN_URL = '';
 const PLUS_URL = '';
 const PLUS_PRIJS = '€2.99';
@@ -267,16 +270,19 @@ function koppelEigenRecept(r) {
 // Kaart "eigen recept" vooraan in de receptenrij, en "eigen product" op het beginscherm.
 const plusLabel = () => heeftPlus() ? '' : '<span class="plus-badge">Plus</span>';
 function plusReceptKaart() {
+  if (!PLUS_AAN) return '';
   return `<button class="recipe-card add-card" id="eigen-recept-knop">
     ${plusLabel()}<span class="add-plus">+</span><span class="recipe-title">Own recipe</span><span class="recipe-saves">Save your own rescue</span>
   </button>`;
 }
 function plusProductKnop() {
+  if (!PLUS_AAN) return '';
   return `<button class="add-product" id="eigen-product-knop"><span class="add-plus">+</span><span><b>Add your own product</b><small>Not in the list? Add it yourself.</small></span>${plusLabel()}</button>`;
 }
 
 // ---------- Steunen ----------
 function steunHTML(klein = false) {
+  if (!PLUS_AAN) return '';
   if (!STEUN_URL) return '';
   return klein
     ? `<a class="steun-link" href="${STEUN_URL}" target="_blank" rel="noopener">Happy with Datechecker? Buy the maker a coffee ☕</a>`
@@ -285,6 +291,8 @@ function steunHTML(klein = false) {
 
 // Instellingen: Plus-status en steunen.
 function renderPlusInstellingen() {
+  document.querySelectorAll('.alleen-plus').forEach(el => el.classList.toggle('hidden', !PLUS_AAN));
+  if (!PLUS_AAN) return;
   $('#set-plus').innerHTML = heeftPlus()
     ? `<button class="settings-row" id="set-plus-open"><span>You have Plus · code ${esc(plus.code)}</span><span class="muted">›</span></button>`
     : `<button class="settings-row" id="set-plus-open"><span>Datechecker Plus · one-time ${PLUS_PRIJS}</span><span class="muted">›</span></button>`;

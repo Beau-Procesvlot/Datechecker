@@ -58,6 +58,7 @@
 
   <!-- INSTELLINGEN -->
   <section id="tab-instellingen" class="hidden">
+    <div class="alleen-plus hidden">
     <h2>Datechecker Plus</h2>
     <p class="muted small">Add your own products and recipes. One-time, no subscription. Checking food always stays free.</p>
     <div id="set-plus"></div>
@@ -65,6 +66,7 @@
     <h2>Support Datechecker</h2>
     <p class="muted small">Datechecker is free and ad-free. Want to thank the maker? You can, with a small amount of your choice.</p>
     <div id="set-steun"></div>
+    </div>
 
     <h2>Backup</h2>
     <p class="muted small">On an iPhone, Safari deletes your data if you don’t open the app for 7 days, unless it’s on your home screen. So a backup is smart. <span id="backup-info"></span></p>
@@ -75,7 +77,7 @@
     <h2>Other</h2>
     <button class="settings-row" id="settings-welcome"><span>Show welcome screen again</span><span class="muted">›</span></button>
     <button class="settings-row" data-open-privacy><span>Privacy: what happens to your data?</span><span class="muted">›</span></button>
-    <a class="settings-row" href="voorwaarden.html" target="_blank" rel="noopener"><span>Datechecker Plus terms</span><span class="muted">›</span></a>
+    <a class="settings-row alleen-plus hidden" href="voorwaarden.html" target="_blank" rel="noopener"><span>Datechecker Plus terms</span><span class="muted">›</span></a>
   </section>
 </main>
 
@@ -112,7 +114,7 @@
     <ul>
       <li><b>GitHub Pages</b> delivers the app itself.</li>
       <li><b>Cloudflare</b> keeps the shared counter. When you choose “Eaten”, it only receives the estimated weight (for example 500 grams) and a random number your phone makes up itself. Not which product, not when you checked it, and nothing about you. That number only exists to stop anyone from inflating the counter (20 per day at most) and is deleted after 2 days.</li>
-      <li><b>Stripe</b> processes the payment when you support Datechecker or buy Plus. Stripe then sees your payment details and email address, like with any online payment. Datechecker itself doesn’t get them: after payment, the counter only checks with Stripe whether payment was made, and stores an unlock code. Who paid isn’t stored with it.</li>
+      <li class="alleen-plus hidden"><b>Stripe</b> processes the payment when you support Datechecker or buy Plus. Stripe then sees your payment details and email address, like with any online payment. Datechecker itself doesn’t get them: after payment, the counter only checks with Stripe whether payment was made, and stores an unlock code. Who paid isn’t stored with it.</li>
     </ul>
     <p>The fonts are built into the app itself; no other service is used for them.</p>
 

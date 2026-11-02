@@ -5,7 +5,7 @@
 const CACHE = 'datechecker';
 
 const SHELL = [
-  './', 'index.html', 'voorwaarden.html', 'manifest.webmanifest', 'version.json',
+  './', 'index.html', 'manifest.webmanifest', 'version.json',
   'css/fonts.css', 'css/app.css',
   'fonts/DMSerifDisplay.woff2', 'fonts/Inter.woff2',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',

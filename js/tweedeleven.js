@@ -103,7 +103,8 @@ function renderTweedeLeven() {
 
   const body = $('#tl-body');
   body.querySelectorAll('[data-recept]').forEach(b => b.onclick = () => openRecept(b.dataset.recept));
-  $('#eigen-recept-knop').onclick = () => openEigenRecept();
+  const eigenRecept = $('#eigen-recept-knop');
+  if (eigenRecept) eigenRecept.onclick = () => openEigenRecept();
   body.querySelectorAll('[data-product]').forEach(b => b.onclick = () => openProduct(b.dataset.product));
   body.querySelectorAll('[data-tlcat]').forEach(b => b.onclick = () => { tlFilter = b.dataset.tlcat || null; renderTweedeLeven(); });
 }
