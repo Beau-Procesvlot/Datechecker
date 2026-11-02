@@ -44,7 +44,7 @@ function productKaart(p) {
   return `<button class="product-card" data-product="${p.id}" style="--kleur:${p.kleur}">
     ${icoon(p.id, 'card-icon')}
     ${sticker(p)}
-    ${p.eigen ? '<span class="eigen-badge">Eigen</span>' : ''}
+    ${p.eigen ? '<span class="eigen-badge">Own</span>' : ''}
     <span class="product-name">${esc(titel)}</span>
     ${sub ? `<span class="product-sub">${esc(sub)}</span>` : ''}
   </button>`;
@@ -63,24 +63,24 @@ function renderZoeken() {
     const hits = PRODUCTEN.map(p => ({ p, s: zoekScore(p, term) })).filter(h => h.s).sort((a, b) => b.s - a.s || a.p.naam.localeCompare(b.p.naam));
     el.innerHTML = hits.length
       ? raster(hits.map(h => h.p))
-      : `<div class="empty">${icoon('ghost', 'empty-icon')}<h2>Geen match.</h2><p class="muted">"${esc(term)}" staat er nog niet in. De lijst groeit; probeer een algemener woord, zoals "kaas" of "brood".</p></div>${plusProductKnop()}`;
+      : `<div class="empty">${icoon('ghost', 'empty-icon')}<h2>No match.</h2><p class="muted">"${esc(term)}" isn’t in the list yet. The list keeps growing; try a more general word, like "cheese" or "bread".</p></div>${plusProductKnop()}`;
   } else {
     const banner = `<button class="info-banner" id="open-info">
-      <span class="info-text"><b>THT of TGT?</b><span>Het verschil bepaalt of je date doorgaat.</span><span class="info-link">Lees hoe het zit</span></span>
-      <span class="info-stickers"><span class="sticker tht">THT</span><span class="sticker tgt">TGT</span></span>
+      <span class="info-text"><b>Best before or use by?</b><span>The difference decides if your date is on.</span><span class="info-link">Find out how it works</span></span>
+      <span class="info-stickers"><span class="sticker tht">Best before</span><span class="sticker tgt">Use by</span></span>
     </button>`;
-    const tegels = `<div class="section-head"><h2>Categorieën</h2></div>
+    const tegels = `<div class="section-head"><h2>Categories</h2></div>
       <div class="cat-row">${CATEGORIEEN.map(c => `<button class="cat-tile ${filterCat === c.id ? 'on' : ''}" data-cat="${c.id}" style="--kleur:${c.kleur}">
         <span class="cat-icon">${icoon('cat-' + c.id)}</span><span>${c.kort}</span></button>`).join('')}</div>`;
     const recentLijst = recent.map(id => productById(id)).filter(Boolean);
     const recentHTML = recentLijst.length && !filterCat
-      ? `<div class="section-head"><h2>Onlangs opgezocht</h2></div>
+      ? `<div class="section-head"><h2>Recently checked</h2></div>
          <div class="recent-row">${recentLijst.map(p => `<button class="recent-card" data-product="${p.id}" style="--kleur:${p.kleur}">${icoon(p.id)}<span>${esc(naamDelen(p).titel)}</span></button>`).join('')}</div>`
       : '';
     const volgorde = id => CATEGORIEEN.findIndex(c => c.id === id);
     const lijst = PRODUCTEN.filter(p => !filterCat || p.categorie === filterCat).sort((a, b) => volgorde(a.categorie) - volgorde(b.categorie));
-    const titel = filterCat ? CATEGORIEEN.find(c => c.id === filterCat).label : 'Alle producten';
-    const grid = `<div class="section-head"><h2>${titel}</h2>${filterCat ? '<button class="pill-link" id="clear-cat">Alles tonen</button>' : ''}</div>
+    const titel = filterCat ? CATEGORIEEN.find(c => c.id === filterCat).label : 'All products';
+    const grid = `<div class="section-head"><h2>${titel}</h2>${filterCat ? '<button class="pill-link" id="clear-cat">Show all</button>' : ''}</div>
       ${raster(lijst)}`;
     el.innerHTML = vraagHTML() + tellerHTML() + banner + tegels + recentHTML + plusProductKnop() + grid;
     koppelVraag(el);

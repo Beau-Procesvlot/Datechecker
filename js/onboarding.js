@@ -14,7 +14,7 @@ function renderWelcome() {
   steps.forEach((s, i) => s.classList.toggle('hidden', i !== welcomeStep));
   document.querySelectorAll('#welcome .w-dots span').forEach((d, i) => d.classList.toggle('on', i === welcomeStep));
   if (welcomeStep === steps.length - 1) {
-    $('#w-home-title').textContent = isStandalone() ? 'Je bent er klaar voor' : `Zet ${APP_NAME} op je beginscherm`;
+    $('#w-home-title').textContent = isStandalone() ? 'You’re all set' : `Add ${APP_NAME} to your home screen`;
     $('#w-homescreen').innerHTML = homeScreenHTML();
   }
 }

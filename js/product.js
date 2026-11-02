@@ -28,19 +28,18 @@ const dagenSinds = datum => Math.round((new Date(today()) - new Date(datum)) / 8
 function datumTekst(tijd, dagen) {
   const n = Math.abs(dagen);
   // Vanaf twee weken in weken, vanaf twee maanden in maanden: "ruim 3 maanden" leest makkelijker dan "109 dagen".
-  const tijdsduur = n >= 60 ? `${n % 30 > 7 ? 'ruim ' : ''}${Math.floor(n / 30)} maanden`
-    : n >= 14 ? `${n % 7 > 1 ? 'ruim ' : ''}${Math.floor(n / 7)} weken`
-    : `${n} ${n === 1 ? 'dag' : 'dagen'}`;
+  const tijdsduur = n >= 60 ? `${n % 30 > 7 ? 'just over ' : ''}${Math.floor(n / 30)} months`
+    : n >= 14 ? `${n % 7 > 1 ? 'just over ' : ''}${Math.floor(n / 7)} weeks`
+    : `${n} ${n === 1 ? 'day' : 'days'}`;
   if (tijd === 'datum') {
-    if (dagen === 0) return 'Dat is vandaag.';
-    return dagen < 0 ? `Nog ${tijdsduur} te gaan.` : `${tijdsduur[0].toUpperCase()}${tijdsduur.slice(1)} over de datum.`;
+    if (dagen === 0) return 'That’s today.';
+    return dagen < 0 ? `${tijdsduur[0].toUpperCase()}${tijdsduur.slice(1)} to go.` : `${tijdsduur[0].toUpperCase()}${tijdsduur.slice(1)} past the date.`;
   }
-  if (dagen < 0) return 'Die datum ligt in de toekomst.';
-  const Tijdsduur = tijdsduur[0].toUpperCase() + tijdsduur.slice(1);
-  if (tijd === 'open') return dagen === 0 ? 'Vandaag geopend.' : `${Tijdsduur} open.`;
-  if (tijd === 'gekocht') return dagen === 0 ? 'Vandaag gekocht.' : `${Tijdsduur} geleden gekocht.`;
-  if (tijd === 'gekookt') return dagen === 0 ? 'Vandaag gekookt.' : `${Tijdsduur} geleden gekookt.`;
-  return dagen === 0 ? 'Vandaag ingevroren.' : `${Tijdsduur} in de vriezer.`;
+  if (dagen < 0) return 'That date is in the future.';
+  if (tijd === 'open') return dagen === 0 ? 'Opened today.' : `Open for ${tijdsduur}.`;
+  if (tijd === 'gekocht') return dagen === 0 ? 'Bought today.' : `Bought ${tijdsduur} ago.`;
+  if (tijd === 'gekookt') return dagen === 0 ? 'Cooked today.' : `Cooked ${tijdsduur} ago.`;
+  return dagen === 0 ? 'Frozen today.' : `In the freezer for ${tijdsduur}.`;
 }
 
 // Het oordeel. Tekenen van bederf gaan altijd voor de datum.
@@ -48,24 +47,24 @@ function datumTekst(tijd, dagen) {
 const echteDatum = (p, antw = {}) => p.datum === 'kies' ? (antw.soort === 'tgt' ? 'TGT' : 'THT') : p.datum;
 
 function oordeel(p, sit, dagen, weg, antw) {
-  if (weg.size) return { type: 'ghost', titel: 'Ghosten.', tekst: `Deze date gaat niet door. ${p.wegUitleg}` };
+  if (weg.size) return { type: 'ghost', titel: 'Ghosted.', tekst: `This date is off. ${p.wegUitleg}` };
   if (dagen == null) return null;
   const d = Math.max(0, dagen);
   const type = d <= sit.match ? 'match' : d <= sit.twijfel ? 'twijfel' : sit.daarna;
   if (type === 'match') {
     return { type, titel: 'It’s a match!', tekst: dagen <= 0 && sit.tijd === 'datum'
-      ? 'Nog binnen de datum. Eet smakelijk.'
-      : 'Waarschijnlijk nog goed. Even kijken, ruiken en proeven voor je begint.' };
+      ? 'Still within the date. Enjoy your meal.'
+      : 'Probably still good. Just look, smell and taste before you dig in.' };
   }
   if (type === 'twijfel') {
-    return { type, titel: 'Eerst goed bekijken.', tekst: d > sit.twijfel
-      ? 'Dit is al lang geleden. Vaak niet gevaarlijk, maar wel minder lekker. Check extra goed, of geef het een tweede leven.'
-      : 'Het kan nog goed zijn. Loop de punten hieronder na voordat je het eet.' };
+    return { type, titel: 'Take a closer look.', tekst: d > sit.twijfel
+      ? 'That’s quite a while ago. Often not dangerous, but less tasty. Check extra carefully, or give it a second chance.'
+      : 'It may still be good. Go through the points below before you eat it.' };
   }
-  if (sit.ghostTekst) return { type: 'ghost', titel: 'Ghosten.', tekst: `Deze date gaat niet door. ${sit.ghostTekst}` };
-  return { type: 'ghost', titel: 'Ghosten.', tekst: echteDatum(p, antw) === 'TGT'
-    ? 'Deze date gaat niet door. Bij een TGT-datum eet je het na de datum niet meer, ook als het er goed uitziet: bacteriën zie of ruik je niet.'
-    : `Deze date gaat niet door. Zo lang erna raden de bronnen het niet meer aan.` };
+  if (sit.ghostTekst) return { type: 'ghost', titel: 'Ghosted.', tekst: `This date is off. ${sit.ghostTekst}` };
+  return { type: 'ghost', titel: 'Ghosted.', tekst: echteDatum(p, antw) === 'TGT'
+    ? 'This date is off. With a “use by” date you don’t eat it after the date, even if it looks fine: you can’t see or smell bacteria.'
+    : `This date is off. The sources don’t recommend eating it this long after.` };
 }
 
 // Bovenste deel: titel, vragen en de datum. Wordt alleen opnieuw getekend als je een vraag beantwoordt.
@@ -86,7 +85,7 @@ function renderProduct() {
     ${cat && cat.kort !== naamDelen(p).titel ? `<span class="kicker">${cat.label}</span>` : ''}
     <h2 class="product-title">${esc(naamDelen(p).titel)}</h2>
     ${naamDelen(p).sub ? `<p class="product-sub-title">${esc(naamDelen(p).sub)}</p>` : ''}
-    <div class="date-type">${sticker(p)}<p><b>${d.kort}.</b> ${d.uitleg}</p></div>
+    <div class="date-type">${sticker(p)}<p>${['THT', 'TGT'].includes(p.datum) ? '' : `<b>${d.kort}.</b> `}${d.uitleg}</p></div>
     ${eigenProductBanner(p)}
 
     ${vragenHTML}
@@ -94,7 +93,7 @@ function renderProduct() {
     <p class="label">${tijd.vraag}</p>
     <div class="date-row">
       <input type="date" id="p-datum" class="date-input" value="${huidig.datum}" ${tijd.verleden ? `max="${today()}"` : ''}>
-      <button class="chip" id="p-vandaag">Vandaag</button>
+      <button class="chip" id="p-vandaag">Today</button>
     </div>
     <p class="date-feedback" id="p-datum-tekst"></p>
 
@@ -124,35 +123,35 @@ function renderOordeel() {
 
   const oordeelHTML = o
     ? `<div class="verdict ${o.type}" id="verdict">${icoon(o.type, 'verdict-icon')}<div><strong>${o.titel}</strong><p>${esc(o.tekst)}</p></div></div>`
-    : `<div class="verdict leeg" id="verdict"><p>Vul de datum in, dan zie je of je date doorgaat.</p></div>`;
+    : `<div class="verdict leeg" id="verdict"><p>Enter the date to see if your date is still on.</p></div>`;
 
-  const bronnen = `<p class="source">Bron: ${p.bron.map(b => `<a href="${b.url}" target="_blank" rel="noopener">${esc(b.naam)}</a>`).join(' · ')}</p>`;
+  const bronnen = `<p class="source">Source: ${p.bron.map(b => `<a href="${b.url}" target="_blank" rel="noopener">${esc(b.naam)}</a>`).join(' · ')}</p>`;
 
   // Vlees en vis na de TGT-datum: geen verdere vragen of checks, het antwoord is gewoon nee.
   if (o?.type === 'ghost' && echteDatum(p, antw) === 'TGT' && !weg.size) {
     huidig.vraagGetoond = false;
     $('#p-oordeel').innerHTML = `${oordeelHTML}
-      <h3>Volgende keer</h3><p>${esc(p.tip)}</p>
+      <h3>Next time</h3><p>${esc(p.tip)}</p>
       ${bronnen}`;
     return;
   }
 
   const tweedeLeven = p.tweedeLeven.length
-    ? `<details class="fold"><summary>Niet je type meer?</summary><p class="muted small">Niet meer lekker, wel nog goed? Geef het een tweede kans:</p><ul class="ideas">${p.tweedeLeven.map(t => `<li>${esc(t)}</li>`).join('')}</ul>${receptKnoppen(p.id)}</details>`
+    ? `<details class="fold"><summary>Not your type anymore?</summary><p class="muted small">Past its best but still good? Give it a second chance:</p><ul class="ideas">${p.tweedeLeven.map(t => `<li>${esc(t)}</li>`).join('')}</ul>${receptKnoppen(p.id)}</details>`
     : '';
 
   $('#p-oordeel').innerHTML = `${oordeelHTML}
-    <p class="rule">${esc(sit.houdbaar)}${sit.geenTermijn ? ' <b>Een vaste termijn na de datum geven de bronnen hier niet: kijk, ruik en proef.</b>' : ''}</p>
+    <p class="rule">${esc(sit.houdbaar)}${sit.geenTermijn ? ' <b>The sources don’t give a fixed period after the date here: look, smell and taste.</b>' : ''}</p>
     ${eetVraagHTML(o)}
 
-    <p class="label">Merk je iets hiervan? <span class="muted">Dan altijd weg</span></p>
+    <p class="label">Notice any of these? <span class="muted">Then always bin it</span></p>
     <div class="chips">${p.weg.map((w, i) => `<button class="chip warn ${weg.has(i) ? 'on' : ''}" data-weg="${i}">${esc(w)}</button>`).join('')}</div>
 
-    <details class="fold" ${o?.type === 'twijfel' ? 'open' : ''}><summary>Check dit eerst</summary><ul class="checks">${p.check.map(c => `<li>${esc(c)}</li>`).join('')}</ul></details>
-    <details class="fold"><summary>Bewaartip</summary><p>${esc(p.tip)}</p></details>
+    <details class="fold" ${o?.type === 'twijfel' ? 'open' : ''}><summary>Check this first</summary><ul class="checks">${p.check.map(c => `<li>${esc(c)}</li>`).join('')}</ul></details>
+    <details class="fold"><summary>Storage tip</summary><p>${esc(p.tip)}</p></details>
     ${tweedeLeven}
 
-    <p class="disclaimer">Een inschatting, geen garantie: jij beslist. Twijfel je? Niet doen. Zwanger, of eet je voor een baby, peuter of iemand met weinig weerstand? Houd je dan aan de datum.</p>
+    <p class="disclaimer">An estimate, not a guarantee: you decide. In doubt? Don’t. Pregnant, or eating for a baby, toddler or someone with low immunity? Then stick to the date.</p>
     ${bronnen}`;
 
   const eetKnop = $('#eet-ja'), weggooiKnop = $('#eet-nee');
@@ -175,11 +174,11 @@ function eetVraagHTML(o) {
   const tonen = o && (o.type === 'match' || o.type === 'twijfel');
   huidig.vraagGetoond = tonen;
   if (!tonen) return '';
-  if (huidig.besluit === 'opgegeten') return `<div class="eat-box done">${icoon('match', 'eat-icon')}<p><b>Gered!</b> Telt mee: ± ${kg(gewichtVan(huidig.p, huidig.antw.open === 'open'))} kg minder weggegooid.</p></div>${steunHTML(true)}`;
-  if (huidig.besluit === 'weg') return `<div class="eat-box"><p>Weggegooid. Jammer, volgende keer beter!</p></div>`;
+  if (huidig.besluit === 'opgegeten') return `<div class="eat-box done">${icoon('match', 'eat-icon')}<p><b>Saved!</b> Counts towards the total: ± ${kg(gewichtVan(huidig.p, huidig.antw.open === 'open'))} kg less wasted.</p></div>${steunHTML(true)}`;
+  if (huidig.besluit === 'weg') return `<div class="eat-box"><p>Thrown away. Too bad, better luck next time!</p></div>`;
   return `<div class="eat-box">
-    <p><b>Is deze date doorgegaan?</b> Laat het weten, dan telt het mee voor de teller.</p>
-    <div class="row"><button class="btn primary" id="eet-ja">Ik eet het op</button><button class="btn" id="eet-nee">Toch weggegooid</button></div>
+    <p><b>Did this date happen?</b> Let us know, so it counts towards the total.</p>
+    <div class="row"><button class="btn primary" id="eet-ja">I’m eating it</button><button class="btn" id="eet-nee">Threw it away</button></div>
   </div>`;
 }
 
@@ -187,7 +186,7 @@ async function besluit(status) {
   huidig.besluit = status;
   const check = await legVast(huidig.p, huidig.antw.open === 'open', status, huidig.checkId);
   huidig.checkId = check.id;
-  if (status === 'opgegeten') toast(`Gered! ± ${kg(check.gram)} kg minder weggegooid`);
+  if (status === 'opgegeten') toast(`Saved! ± ${kg(check.gram)} kg less wasted`);
   renderOordeel();
 }
 

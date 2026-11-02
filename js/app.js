@@ -27,11 +27,11 @@ function renderChips(el, options, isOn, onClick) {
 }
 
 function daysAgoText(dateStr) {
-  if (!dateStr) return 'nog nooit';
+  if (!dateStr) return 'never';
   const days = Math.round((new Date(today()) - new Date(dateStr)) / 86400000);
-  if (days === 0) return 'vandaag';
-  if (days === 1) return 'gisteren';
-  return `${days} dagen geleden`;
+  if (days === 0) return 'today';
+  if (days === 1) return 'yesterday';
+  return `${days} days ago`;
 }
 
 let toastTimer;
@@ -103,7 +103,7 @@ async function saveProfile() {
 }
 
 // ---------- Tabs ----------
-const TAB_TITLES = { zoeken: 'Met wie heb je een <em>date</em> vandaag?', tips: 'Dating <em>tips</em>', 'tweede-leven': 'Niet je type meer?', instellingen: 'Instellingen' };
+const TAB_TITLES = { zoeken: 'Who’s your <em>date</em> today?', tips: 'Dating <em>tips</em>', 'tweede-leven': 'Not your type anymore?', instellingen: 'Settings' };
 
 function showTab(name) {
   document.querySelectorAll('.tabbar button').forEach(b => b.classList.toggle('on', b.dataset.tab === name));

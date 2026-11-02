@@ -34,7 +34,7 @@ const gered = {
 
 const kg = gram => {
   const k = gram / 1000;
-  return k.toLocaleString('nl-NL', { maximumFractionDigits: k < 10 ? 1 : 0 });
+  return k.toLocaleString('en-GB', { maximumFractionDigits: k < 10 ? 1 : 0 });
 };
 
 async function bewaarGered() {
@@ -127,11 +127,11 @@ function tellerHTML() {
   const mijn = mijnTotaal();
   const samen = gered.totaal;
   const groot = samen
-    ? `<span class="counter-kicker">Samen met alle gebruikers</span><b class="counter-big">± ${kg(samen.gram)} kg</b><span class="counter-sub">eten gered van de prullenbak</span>`
-    : `<span class="counter-kicker">Jouw teller</span><b class="counter-big">± ${kg(mijn.gram)} kg</b><span class="counter-sub">eten door jou gered van de prullenbak</span>`;
+    ? `<span class="counter-kicker">Together with all users</span><b class="counter-big">± ${kg(samen.gram)} kg</b><span class="counter-sub">of food saved from the bin</span>`
+    : `<span class="counter-kicker">Your counter</span><b class="counter-big">± ${kg(mijn.gram)} kg</b><span class="counter-sub">of food you saved from the bin</span>`;
   const klein = samen
-    ? `<p class="counter-me">Jij redde er ${mijn.producten} ${mijn.producten === 1 ? 'product' : 'producten'} van (± ${kg(mijn.gram)} kg)</p>`
-    : (mijn.producten ? `<p class="counter-me">${mijn.producten} ${mijn.producten === 1 ? 'product' : 'producten'} opgegeten na een check</p>` : `<p class="counter-me">Check een product en eet het op: dan telt het mee.</p>`);
+    ? `<p class="counter-me">You saved ${mijn.producten} ${mijn.producten === 1 ? 'product' : 'products'} of that (± ${kg(mijn.gram)} kg)</p>`
+    : (mijn.producten ? `<p class="counter-me">${mijn.producten} ${mijn.producten === 1 ? 'product' : 'products'} eaten after a check</p>` : `<p class="counter-me">Check a product and eat it: then it counts.</p>`);
   return `<div class="counter-card">${icoon('match', 'counter-icon')}<div class="counter-text">${groot}${klein}</div></div>`;
 }
 
@@ -143,11 +143,11 @@ function vraagHTML() {
   const wanneer = daysAgoText(new Date(c.at).toISOString().slice(0, 10));
   return `<div class="followup" data-check="${c.id}" style="--kleur:${p.kleur}">
     ${icoon(p.id, 'followup-icon')}
-    <div class="followup-text"><b>Is die date doorgegaan?</b><span>Je checkte ${wanneer} ${esc(naamDelen(p).titel.toLowerCase())}.</span></div>
+    <div class="followup-text"><b>Did that date happen?</b><span>You checked ${esc(naamDelen(p).titel.toLowerCase())} ${wanneer}.</span></div>
     <div class="followup-buttons">
-      <button class="chip on" data-antwoord="opgegeten">Opgegeten</button>
-      <button class="chip" data-antwoord="weg">Weggegooid</button>
-      <button class="chip" data-antwoord="onbekend">Weet ik niet meer</button>
+      <button class="chip on" data-antwoord="opgegeten">Eaten</button>
+      <button class="chip" data-antwoord="weg">Thrown away</button>
+      <button class="chip" data-antwoord="onbekend">Don’t remember</button>
     </div>
   </div>`;
 }
@@ -160,7 +160,7 @@ function koppelVraag(el) {
     const p = productById(c.product);
     if (b.dataset.antwoord === 'onbekend') { c.status = 'onbekend'; await bewaarGered(); renderZoeken(); return; }
     await legVast(p, false, b.dataset.antwoord, c.id);
-    toast(b.dataset.antwoord === 'opgegeten' ? `Gered! ± ${kg(c.gram)} kg minder weggegooid` : 'Jammer. Volgende keer beter!');
+    toast(b.dataset.antwoord === 'opgegeten' ? `Saved! ± ${kg(c.gram)} kg less wasted` : 'Too bad. Better luck next time!');
   });
 }
 

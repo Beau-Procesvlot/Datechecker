@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -23,15 +23,15 @@
   <div class="brand-row">
     <img class="brand-icon" src="icons/icon-192.png" alt="">
     <span class="brand">Datechecker</span>
-    <span class="zonde">een app van Zonde.</span>
+    <span class="zonde">an app by Zonde.</span>
   </div>
   <h1 id="page-title"></h1>
 </header>
 
-<button id="update-banner" class="update-banner hidden">Er is een nieuwe versie van de app. <b>Tik om te verversen</b></button>
+<button id="update-banner" class="update-banner hidden">There’s a new version of the app. <b>Tap to refresh</b></button>
 
 <div id="storage-warning" class="warning hidden">
-  Deze browser bewaart je gegevens niet. Wat je toevoegt is weg na het sluiten.
+  This browser doesn’t save your data. Anything you add is gone when you close it.
 </div>
 
 <main>
@@ -39,62 +39,62 @@
   <section id="tab-zoeken">
     <label class="search-wrap">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input type="search" id="search" class="search" placeholder="Zoek een product, bv. yoghurt" autocomplete="off" enterkeyhint="search" aria-label="Zoek een product">
+      <input type="search" id="search" class="search" placeholder="Search a product, e.g. yoghurt" autocomplete="off" enterkeyhint="search" aria-label="Search a product">
     </label>
     <div id="search-results"></div>
   </section>
 
   <!-- DATING TIPS -->
   <section id="tab-tips" class="hidden">
-    <p class="tab-intro">Zo blijft je eten langer goed, en hoef je minder vaak te ghosten.</p>
+    <p class="tab-intro">Keep your food good for longer, so you have to ghost less often.</p>
     <div id="tips-body"></div>
   </section>
 
   <!-- TWEEDE LEVEN (fase 4) -->
   <section id="tab-tweede-leven" class="hidden">
-    <p class="tab-intro">Niet meer lekker, wel nog goed? Geef het een tweede kans.</p>
+    <p class="tab-intro">Past its best, but still good? Give it a second chance.</p>
     <div id="tl-body"></div>
   </section>
 
   <!-- INSTELLINGEN -->
   <section id="tab-instellingen" class="hidden">
     <h2>Datechecker Plus</h2>
-    <p class="muted small">Eigen producten en eigen recepten toevoegen. Eenmalig, geen abonnement. Opzoeken blijft altijd gratis.</p>
+    <p class="muted small">Add your own products and recipes. One-time, no subscription. Checking food always stays free.</p>
     <div id="set-plus"></div>
 
-    <h2>Steun Datechecker</h2>
-    <p class="muted small">Datechecker is gratis en zonder reclame. Wil je de maker bedanken? Dat kan met een klein bedrag naar keuze.</p>
+    <h2>Support Datechecker</h2>
+    <p class="muted small">Datechecker is free and ad-free. Want to thank the maker? You can, with a small amount of your choice.</p>
     <div id="set-steun"></div>
 
-    <h2>Back-up</h2>
-    <p class="muted small">Op een iPhone wist Safari je gegevens als je de app 7 dagen niet opent, tenzij hij op je beginscherm staat. Een back-up is dus slim. <span id="backup-info"></span></p>
-    <button class="settings-row" id="backup-save"><span>Opslaan als bestand</span><span class="muted">›</span></button>
-    <button class="settings-row" id="backup-restore"><span>Back-up terugzetten</span><span class="muted">›</span></button>
+    <h2>Backup</h2>
+    <p class="muted small">On an iPhone, Safari deletes your data if you don’t open the app for 7 days, unless it’s on your home screen. So a backup is smart. <span id="backup-info"></span></p>
+    <button class="settings-row" id="backup-save"><span>Save as file</span><span class="muted">›</span></button>
+    <button class="settings-row" id="backup-restore"><span>Restore backup</span><span class="muted">›</span></button>
     <input type="file" id="backup-file" accept="application/json,.json" hidden>
 
-    <h2>Overig</h2>
-    <button class="settings-row" id="settings-welcome"><span>Welkomstscherm opnieuw</span><span class="muted">›</span></button>
-    <button class="settings-row" data-open-privacy><span>Privacy: wat gebeurt er met je gegevens?</span><span class="muted">›</span></button>
-    <a class="settings-row" href="voorwaarden.html" target="_blank" rel="noopener"><span>Voorwaarden Datechecker Plus</span><span class="muted">›</span></a>
+    <h2>Other</h2>
+    <button class="settings-row" id="settings-welcome"><span>Show welcome screen again</span><span class="muted">›</span></button>
+    <button class="settings-row" data-open-privacy><span>Privacy: what happens to your data?</span><span class="muted">›</span></button>
+    <a class="settings-row" href="voorwaarden.html" target="_blank" rel="noopener"><span>Datechecker Plus terms</span><span class="muted">›</span></a>
   </section>
 </main>
 
 <nav class="tabbar">
-  <button data-tab="zoeken" class="on" aria-label="Zoeken">
+  <button data-tab="zoeken" class="on" aria-label="Search">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <span>Zoeken</span>
+    <span>Search</span>
   </button>
   <button data-tab="tips" aria-label="Dating tips">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span>Tips</span>
   </button>
-  <button data-tab="tweede-leven" aria-label="Tweede leven">
+  <button data-tab="tweede-leven" aria-label="Second chance">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14zM5 19l7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>Tweede leven</span>
+    <span>Second chance</span>
   </button>
-  <button data-tab="instellingen" aria-label="Instellingen">
+  <button data-tab="instellingen" aria-label="Settings">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-    <span>Instellingen</span>
+    <span>Settings</span>
   </button>
 </nav>
 
@@ -102,23 +102,23 @@
   <div class="sheet-handle"></div>
   <div class="sheet-body privacy">
     <h2 class="sheet-title">Privacy</h2>
-    <p><strong>Kort gezegd: deze app verzamelt niets over jou.</strong> Er is geen account, geen reclame en geen tracking. De maker van de app kan niet zien wat jij opzoekt. Alleen als je aangeeft dat je iets hebt opgegeten, gaat er een anoniem seintje naar de gezamenlijke teller.</p>
+    <p><strong>In short: this app collects nothing about you.</strong> No account, no ads and no tracking. The maker of the app can’t see what you look up. Only when you say you ate something does an anonymous signal go to the shared counter.</p>
 
-    <h3>Wat er op je telefoon blijft</h3>
-    <p>Alles wat je in de app zet, en je instellingen. Dat staat alleen in de browser van je eigen telefoon. Verwijder je de app of de websitegegevens, dan is het weg. Daarom kun je een back-up maken; dat bestand bewaar je zelf, waar jij wilt.</p>
+    <h3>What stays on your phone</h3>
+    <p>Everything you put in the app, and your settings. It’s only stored in the browser on your own phone. Delete the app or the website data and it’s gone. That’s why you can make a backup; you keep that file yourself, wherever you like.</p>
 
-    <h3>Diensten die iets zien</h3>
-    <p>Zoals elke website zien de diensten die de app gebruikt je IP-adres:</p>
+    <h3>Services that see something</h3>
+    <p>Like any website, the services the app uses see your IP address:</p>
     <ul>
-      <li><b>GitHub Pages</b> levert de app zelf.</li>
-      <li><b>Cloudflare</b> houdt de gezamenlijke teller bij. Als je “Opgegeten” kiest, krijgt die alleen het geschatte gewicht (bijvoorbeeld 500 gram) en een willekeurig nummer dat je telefoon zelf verzint. Niet welk product, niet wanneer je het checkte, en niets over jou. Dat nummer is er alleen om te voorkomen dat iemand de teller opblaast (maximaal 20 per dag) en wordt na 2 dagen gewist.</li>
-      <li><b>Stripe</b> verwerkt de betaling als je Datechecker steunt of Plus koopt. Stripe ziet dan je betaalgegevens en e-mailadres, zoals bij elke online betaling. Datechecker zelf krijgt die niet: na het betalen controleert de teller bij Stripe alleen óf er betaald is, en bewaart een ontgrendelcode. Wie er betaald heeft, staat daar niet bij.</li>
+      <li><b>GitHub Pages</b> delivers the app itself.</li>
+      <li><b>Cloudflare</b> keeps the shared counter. When you choose “Eaten”, it only receives the estimated weight (for example 500 grams) and a random number your phone makes up itself. Not which product, not when you checked it, and nothing about you. That number only exists to stop anyone from inflating the counter (20 per day at most) and is deleted after 2 days.</li>
+      <li><b>Stripe</b> processes the payment when you support Datechecker or buy Plus. Stripe then sees your payment details and email address, like with any online payment. Datechecker itself doesn’t get them: after payment, the counter only checks with Stripe whether payment was made, and stores an unlock code. Who paid isn’t stored with it.</li>
     </ul>
-    <p>De lettertypes zitten in de app zelf; daarvoor wordt geen andere dienst gebruikt.</p>
+    <p>The fonts are built into the app itself; no other service is used for them.</p>
 
-    <h3>Alles wissen</h3>
-    <p>Verwijder de app van je beginscherm, of wis de websitegegevens in de instellingen van Safari.</p>
-    <p class="muted small">Bijgewerkt op 29 oktober 2026.</p>
+    <h3>Delete everything</h3>
+    <p>Remove the app from your home screen, or clear the website data in your Safari settings.</p>
+    <p class="muted small">Updated on 2 November 2026.</p>
   </div>
 </dialog>
 
@@ -127,16 +127,16 @@
   <div class="w-step">
     <span class="brand">Datechecker</span>
     <img class="w-mascot" src="icons/icon-512.png" alt="">
-    <h2 class="w-title">Over de datum?<br>Nog niet weg.</h2>
-    <p>Veel eten belandt in de prullenbak terwijl het nog prima is. Zoek je product op en Datechecker vertelt je of je date nog doorgaat, en waar je op let.</p>
+    <h2 class="w-title">Past the date?<br>Not out yet.</h2>
+    <p>Lots of food ends up in the bin while it’s still perfectly fine. Look up your product and Datechecker tells you if your date is still on, and what to look out for.</p>
     <button class="btn primary" id="w-start">Let’s go</button>
-    <button class="link w-privacy" data-open-privacy>Wat gebeurt er met je gegevens?</button>
+    <button class="link w-privacy" data-open-privacy>What happens to your data?</button>
   </div>
   <div class="w-step hidden">
-    <span class="brand">1 van 1</span>
-    <h2 class="w-title" id="w-home-title">Zet de app op je beginscherm</h2>
+    <span class="brand">1 of 1</span>
+    <h2 class="w-title" id="w-home-title">Add the app to your home screen</h2>
     <div id="w-homescreen"></div>
-    <button class="btn primary" id="w-done">Aan de slag</button>
+    <button class="btn primary" id="w-done">Get started</button>
   </div>
   <div class="w-dots"><span></span><span></span></div>
 </dialog>
@@ -144,7 +144,7 @@
 <!-- Productpagina: schermvullend, met een gekleurd vlak bovenaan -->
 <dialog id="product-sheet" class="product-view">
   <div class="hero gingham-soft" id="product-hero">
-    <button class="back" id="product-back" aria-label="Terug">
+    <button class="back" id="product-back" aria-label="Back">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="product-hero-icon"></div>
@@ -174,20 +174,20 @@
 <dialog id="info-sheet" class="sheet">
   <div class="sheet-handle"></div>
   <div class="sheet-body info">
-    <h2 class="sheet-title">Twee soorten datums</h2>
+    <h2 class="sheet-title">Two kinds of dates</h2>
     <div class="info-card tht">
-      <span class="sticker tht">THT</span>
-      <h3>Ten minste houdbaar tot</h3>
-      <p>Een kwaliteitsdatum. Tot die datum is het op z’n best. Daarna is het vaak nog prima: kijk, ruik en proef. Hier valt de meeste winst te halen.</p>
-      <p class="muted small">Bijvoorbeeld: brood, yoghurt, kaas, eieren, pasta, rijst, koekjes.</p>
+      <span class="sticker tht">Best before</span>
+      <h3>Best before</h3>
+      <p>A quality date. Until that date the food is at its best. After it, it’s often still fine: look, smell and taste. This is where you can save the most food.</p>
+      <p class="muted small">For example: bread, yoghurt, cheese, eggs, pasta, rice, biscuits.</p>
     </div>
     <div class="info-card tgt">
-      <span class="sticker tgt">TGT</span>
-      <h3>Te gebruiken tot</h3>
-      <p>Een veiligheidsdatum. Na de datum eet je het niet meer, ook als het er goed uitziet. Ziekmakende bacteriën zie of ruik je niet. Wel kun je het vóór de datum invriezen.</p>
-      <p class="muted small">Bijvoorbeeld: vers vlees, kip, vis, vleeswaren.</p>
+      <span class="sticker tgt">Use by</span>
+      <h3>Use by</h3>
+      <p>A safety date. Don’t eat it after the date, even if it looks fine. You can’t see or smell harmful bacteria. You can freeze it before the date, though.</p>
+      <p class="muted small">For example: fresh meat, chicken, fish, cold cuts.</p>
     </div>
-    <p class="source">Bron: <a href="https://www.voedingscentrum.nl/encyclopedie/houdbaarheidsdatums-tht-tgt.aspx" target="_blank" rel="noopener">Voedingscentrum</a></p>
+    <p class="source">Source: <a href="https://www.voedingscentrum.nl/encyclopedie/houdbaarheidsdatums-tht-tgt.aspx" target="_blank" rel="noopener">Voedingscentrum</a></p>
   </div>
 </dialog>
 

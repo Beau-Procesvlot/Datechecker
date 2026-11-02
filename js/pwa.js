@@ -48,19 +48,19 @@ const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.p
 // Uitleg voor de laatste stap van het welkomstscherm.
 function homeScreenHTML() {
   if (isStandalone()) {
-    return `<p>${APP_NAME} staat al op je beginscherm. Top: zo blijven je gegevens bewaard.</p>
-      <p>Maak wel af en toe een back-up (bij Instellingen). Als je telefoon kwijtraakt of je de app verwijdert, heb je alles dan nog.</p>`;
+    return `<p>${APP_NAME} is already on your home screen. Nice: that way your data stays saved.</p>
+      <p>Do make a backup now and then (in Settings). If you lose your phone or delete the app, you’ll still have everything.</p>`;
   }
   const steps = isIOS()
-    ? `<li>Tik in Safari op <b>Deel</b> <span class="share-icon" aria-hidden="true"></span> (zie je die niet, tik dan eerst op <b>•••</b>)</li>
-       <li>Kies <b>Zet op beginscherm</b></li>
-       <li>Open ${APP_NAME} voortaan via het icoon op je beginscherm</li>`
-    : `<li>Tik in je browser op het menu <b>⋮</b></li>
-       <li>Kies <b>App installeren</b> of <b>Toevoegen aan startscherm</b></li>
-       <li>Open ${APP_NAME} voortaan via het icoon</li>`;
+    ? `<li>In Safari, tap <b>Share</b> <span class="share-icon" aria-hidden="true"></span> (don’t see it? Tap <b>•••</b> first)</li>
+       <li>Choose <b>Add to Home Screen</b></li>
+       <li>From now on, open ${APP_NAME} from the icon on your home screen</li>`
+    : `<li>In your browser, tap the menu <b>⋮</b></li>
+       <li>Choose <b>Install app</b> or <b>Add to Home screen</b></li>
+       <li>From now on, open ${APP_NAME} from the icon</li>`;
   return `<ol class="hs-steps">${steps}</ol>
-    <p class="w-callout"><strong>Waarom?</strong> Je gegevens staan alleen op je telefoon. Safari wist de gegevens van een website die je 7 dagen niet opent, maar niet van een app op je beginscherm.</p>
-    <p class="muted small">Maak daarnaast af en toe een back-up (bij Instellingen).</p>`;
+    <p class="w-callout"><strong>Why?</strong> Your data is only stored on your phone. Safari deletes the data of a website you haven’t opened for 7 days, but not of an app on your home screen.</p>
+    <p class="muted small">Also make a backup now and then (in Settings).</p>`;
 }
 
 // ---------- Privacy ----------

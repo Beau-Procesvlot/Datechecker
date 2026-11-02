@@ -1,8 +1,8 @@
 {
   "name": "Datechecker",
   "short_name": "Datechecker",
-  "description": "Over de datum? Check of het nog goed is.",
-  "lang": "nl",
+  "description": "Past the date? Check if it’s still good.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
